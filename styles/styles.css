@@ -1,0 +1,94 @@
+
+:root {
+   --header-height: 60px;
+   --container-max-width: 1000px;
+}
+
+/***************************************************************************/
+/***********             CUSTOM CLASSES                 ********************/
+/***************************************************************************/
+body {
+   height: 100svh;
+   overflow: hidden;
+}
+
+/************* HEADER ***************************/
+
+header {
+   height: var(--header-height);
+   background-color: var(--gray-100);
+   box-shadow: var(--shadow);
+}
+
+
+/************* VIEW: START  ***************************/
+.btn-reset {
+   background-color: rgb(254, 201, 201);
+   font-size: 0.8rem;
+}
+
+.score-display {
+   width: 80px;
+   text-align: left;
+}
+
+
+/************* VIEW: GAME  ***************************/
+.view-game {   
+   max-width: 400px;
+   min-width: 280px;
+}
+
+.question {
+   height: 200px;
+   border: 2px solid var(--gray-300);
+   border-radius: 10px;
+   font-size: 2rem;
+}
+
+.btn-choice {
+   place-items: center;
+   height: 80px;
+   font-size: 2rem;
+   border-radius: 8px;
+   color: #f6f6f6;
+   cursor: pointer;
+}
+
+.btn-choice:nth-child(1) {
+   background-color: rgb(90, 90, 223);
+}
+.btn-choice:nth-child(2) {
+   background-color: rgb(45, 215, 85);
+}
+.btn-choice:nth-child(3) {
+   background-color: rgb(239, 189, 64);
+}
+.btn-choice:nth-child(4) {
+   background-color: rgb(236, 80, 71);
+}
+
+
+
+/***************************************************************************/
+/***********       CLASSES CASCADED LAST          *************************/
+/***************************************************************************/
+.nodisplay {
+   display: none !important;
+}
+
+/***************************************************************************/
+/***********         RESPONSIVE MEDIA QUERIES     *************************/
+/***************************************************************************/
+
+@media only screen and (max-width: 992px) {
+}
+
+@media only screen and (max-width: 767px) {
+}
+
+@media only screen and (max-width: 575px) {
+}
+
+@media only screen and (max-width: 375px) {
+}
