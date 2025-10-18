@@ -17,6 +17,7 @@ const Dom = {
       this.question = document.querySelector(".question");
       this.btnChoices = document.querySelectorAll(".btn-choice");
       this.scoreDisplay = document.querySelector(".score-display");
+      this.successOverlay = document.querySelector(".success-overlay");
    },
 };
 
@@ -74,6 +75,21 @@ const Ui = {
 
    updateScoreDisplay(newScore) {
       Dom.scoreDisplay.textContent = newScore;
+   },
+
+   showSuccessOverlay() {
+      return new Promise((resolve) => {
+         Utils.log("Showing success overlay", Utils.ENUM.LOG.INFO);
+
+         // Show the overlay
+         Utils.show(Dom.successOverlay);
+
+         // Hide it after the animation completes (1.5s)
+         setTimeout(() => {
+            Utils.hide(Dom.successOverlay);
+            resolve(true);
+         }, 1500);
+      });
    },
 };
 
@@ -143,10 +159,14 @@ const Game = {
       if (parseInt(selectedChoice) === this.correctAnswerIndex) {
          Utils.log("User selected the correct answer!", Utils.ENUM.LOG.INFO);
          User.updateScore(1);
+         // Show success overlay animation
+         Ui.showSuccessOverlay().then(() => {
+            this.next();
+         });
       } else {
          Utils.log("User selected the wrong answer.", Utils.ENUM.LOG.INFO);
+         this.next();
       }
-      this.next();
    },
 
    insertQuestion(question) {

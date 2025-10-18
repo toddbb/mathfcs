@@ -68,6 +68,46 @@ header {
    background-color: rgb(236, 80, 71);
 }
 
+/************* SUCCESS OVERLAY ***************************/
+.success-overlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100vw;
+   height: 100vh;
+   background-color: rgba(0, 0, 0, 0.3);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   z-index: 1000;
+   pointer-events: none;
+}
+
+.success-animation {
+   font-size: 8rem;
+   animation: thumbsUpAnimation 1.5s ease-out forwards;
+   transform: scale(0);
+}
+
+@keyframes thumbsUpAnimation {
+   0% {
+      transform: scale(0) rotate(-45deg);
+      opacity: 0;
+   }
+   30% {
+      transform: scale(1.2) rotate(10deg);
+      opacity: 1;
+   }
+   60% {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+   }
+   100% {
+      transform: scale(1) rotate(0deg);
+      opacity: 0;
+   }
+}
+
 
 
 /***************************************************************************/
