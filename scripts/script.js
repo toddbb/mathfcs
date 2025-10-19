@@ -18,6 +18,7 @@ const Dom = {
       this.btnChoices = document.querySelectorAll(".btn-choice");
       this.scoreDisplay = document.querySelector(".score-display");
       this.successOverlay = document.querySelector(".success-overlay");
+      this.incorrectOverlay = document.querySelector(".incorrect-overlay");
    },
 };
 
@@ -55,7 +56,7 @@ const Events = {
 const Ui = {
    hideAllViews() {
       return new Promise((resolve) => {
-         Utils.log(`Hiding all views`, Utils.ENUM.LOG.INFO);
+         // Utils.log(`Hiding all views`, Utils.ENUM.LOG.INFO);
          Object.values(Dom.Views).forEach((view) => {
             Utils.hide(view);
          });
@@ -65,7 +66,7 @@ const Ui = {
 
    showView(viewName) {
       return new Promise((resolve) => {
-         Utils.log(`Switching to view: ${viewName}`, Utils.ENUM.LOG.INFO);
+         // Utils.log(`Switching to view: ${viewName}`, Utils.ENUM.LOG.INFO);
          Ui.hideAllViews().then(() => {
             Utils.show(Dom.Views[viewName]);
             resolve(true);
@@ -77,9 +78,22 @@ const Ui = {
       Dom.scoreDisplay.textContent = newScore;
    },
 
+   showIncorrectOverlay() {
+      return new Promise((resolve) => {
+         //Utils.log("Showing incorrect overlay", Utils.ENUM.LOG.INFO);
+         // Show the overlay
+         Utils.show(Dom.incorrectOverlay);
+         // Hide it after the animation completes (2s)
+         setTimeout(() => {
+            Utils.hide(Dom.incorrectOverlay);
+            resolve(true);
+         }, 2000);
+      });
+   },
+
    showSuccessOverlay() {
       return new Promise((resolve) => {
-         Utils.log("Showing success overlay", Utils.ENUM.LOG.INFO);
+         // Utils.log("Showing success overlay", Utils.ENUM.LOG.INFO);
 
          // Show the overlay
          Utils.show(Dom.successOverlay);
@@ -88,7 +102,7 @@ const Ui = {
          setTimeout(() => {
             Utils.hide(Dom.successOverlay);
             resolve(true);
-         }, 1500);
+         }, 750);
       });
    },
 };
@@ -135,9 +149,9 @@ const User = {
       const userData = AppStorage().local.get("user_data");
       if (userData) {
          User.user = userData;
-         Utils.log("User data loaded from storage", Utils.ENUM.LOG.INFO);
+         Utils.log("User data loaded from storage", "👤");
       } else {
-         console.log("No user data found, initializing new user.");
+         Utils.log("No user data found, initializing new user.", "👤");
          User.user = { name: "Guest", score: 0 };
          // Save the new user data immediately (not debounced for initial setup)
          User.set();
@@ -155,23 +169,27 @@ const Game = {
    choices: [],
 
    checkAnswer(selectedChoice) {
-      Utils.log(`User selected choice: ${selectedChoice}`, Utils.ENUM.LOG.INFO);
+      // Utils.log(`User selected choice: ${selectedChoice}`, Utils.ENUM.LOG.INFO);
       if (parseInt(selectedChoice) === this.correctAnswerIndex) {
-         Utils.log("User selected the correct answer!", Utils.ENUM.LOG.INFO);
+         // Utils.log("User selected the correct answer!", Utils.ENUM.LOG.INFO);
          User.updateScore(1);
          // Show success overlay animation
          Ui.showSuccessOverlay().then(() => {
             this.next();
          });
       } else {
-         Utils.log("User selected the wrong answer.", Utils.ENUM.LOG.INFO);
-         this.next();
+         // Utils.log("User selected the wrong answer.", Utils.ENUM.LOG.INFO);
+
+         // Show incorrect overlay animation
+         Ui.showIncorrectOverlay().then(() => {
+            this.next();
+         });
       }
    },
 
    insertQuestion(question) {
-      // Replace "*" with "x" for display purposes only
-      const displayQuestion = question.replace(/\*/g, "x");
+      // Replace "*" with "x" for display purposes only and replace "/" with "÷"
+      const displayQuestion = question.replace(/\*/g, "x").replace(/\//g, "÷");
       Dom.question.textContent = displayQuestion;
    },
 
@@ -229,30 +247,34 @@ const MathModule = {
    },
 
    _getRandomOperator() {
-      const operators = ["+", "-", "*"];
+      const operators = ["+", "-", "*", "/"];
       const randomIndex = Utils.getRandomInclusive(0, operators.length - 1);
       return operators[randomIndex];
    },
 
    async _generateQuestion() {
+      const operator = this._getRandomOperator();
       let num1 = Utils.getRandomInclusive(1, 10);
       let num2 = Utils.getRandomInclusive(1, 10);
-      const operator = this._getRandomOperator();
 
       // For subtraction, ensure num1 is always >= num2 to avoid negative results
       if (operator === "-" && num1 < num2) {
          // Swap the numbers to ensure num1 >= num2
          [num1, num2] = [num2, num1];
+      } else if (operator === "/") {
+         // Ensure num1 is a multiple of num2 to avoid fractional answers
+         num2 = Utils.getRandomInclusive(1, 10);
+         num1 = num2 * Utils.getRandomInclusive(1, 10);
       }
 
       const question = `${num1} ${operator} ${num2}`;
-      console.log(`📖 Generated question: ${question}`);
+      // console.log(`📖 Generated question: ${question}`);
       return question;
    },
 
    async _calculateAnswer() {
       const result = eval(this.question);
-      console.log(`📖 Correct answer is: ${result}`);
+      // console.log(`📖 Correct answer is: ${result}`);
       return result;
    },
 
@@ -265,7 +287,7 @@ const MathModule = {
          choices.add(fakeAnswer);
       }
       const allChoices = Array.from(choices).sort(() => Math.random() - 0.5);
-      console.log(`📖 Generated choices: ${allChoices}`);
+      // console.log(`📖 Generated choices: ${allChoices}`);
       return allChoices;
    },
 };

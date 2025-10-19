@@ -554,7 +554,7 @@ const $typeLookup = {
 export function log(msg, type) {
    let string;
 
-   const emoji = $typeLookup[type] || "";
+   const emoji = $typeLookup[type] || type || "";
 
    if (Array.isArray(msg)) {
       string = msg.map((item) => `${emoji} [${MY_APP}] ${item}`).join("\n");

@@ -11,7 +11,7 @@
    <body>
       <header class="flex flex-row w-full justify-center align-center">
          <div class="container flex flex-row justify-between py-4">
-            <button class="btn btn-reset">Reset</button>
+            <button class="btn btn-reset" style="visibility: hidden">Reset</button>
             <div class="points-container flex flex-row gap-4 text-xl">
                <span class="icon">⭐</span>
                <span class="score-display">0</span>
@@ -21,7 +21,7 @@
       <main class="flex flex-row justify-center w-full h-full">
          <div class="container flex flex-col h-full items-center">
             <div class="view view-start flex flex-col items-center justify-evenly gap-12 h-full py-8">
-               <h1>Go to bed, Ellie!</h1>
+               <h1>Math Quiz</h1>
                <p>Click "Start" to begin the quiz!</p>
                <button class="btn btn-start btn-primary">Start</button>
             </div>
@@ -40,6 +40,11 @@
       <!-- Success Overlay -->
       <div class="success-overlay nodisplay">
          <div class="success-animation">👍</div>
+      </div>
+
+      <!-- Incorrect Overlay -->
+      <div class="incorrect-overlay nodisplay">
+         <div class="incorrect-animation">❌</div>
       </div>
 
       <script src="./scripts/script.js" type="module"></script>
