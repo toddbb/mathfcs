@@ -4,6 +4,13 @@
    --container-max-width: 1000px;
 }
 
+.icon {
+   cursor: pointer;
+   
+}
+
+
+
 /***************************************************************************/
 /***********             CUSTOM CLASSES                 ********************/
 /***************************************************************************/
@@ -30,6 +37,35 @@ header {
 .score-display {
    width: 80px;
    text-align: left;
+}
+
+.btn-difficulty {
+   height: 70px;
+   width: 120px;
+   font-size: 0.8rem;
+   border-radius: 3px;
+   cursor: pointer;
+   color:#f6f6f6
+}
+
+.btn-difficulty:nth-child(1) {
+   background-color: rgb(133, 133, 242);
+}
+
+.btn-difficulty:nth-child(2) {
+   background-color: rgb(96, 96, 210);
+}
+
+.btn-difficulty:nth-child(3) {
+   background-color: rgb(81, 81, 190);
+}
+
+.btn-difficulty:nth-child(4) {
+   background-color: rgb(45, 45, 142);
+}
+
+.btn-difficulty:hover {
+   filter: brightness(1.1);
 }
 
 
