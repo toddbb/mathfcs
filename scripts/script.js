@@ -5,23 +5,9 @@ import Game from "./modules/controllers/Game.mjs";
 import MathModule from "./modules/controllers/maths.mjs";
 import Ui from "./modules/controllers/ui.mjs";
 import User from "./modules/controllers/user.mjs";
-import router from "./modules/services/routing.mjs";
+import { initRouter } from "./modules/services/routing.mjs";
 import AppStorage from "./modules/services/storageService.mjs";
 import * as Utils from "./modules/utilities/utils.mjs";
-
-function initRouter() {
-   router
-      .addRoute("/", () => {
-         Ui.showView("start");
-      })
-      .addRoute("/game", () => {
-         Ui.showView("game");
-      })
-      /* .setNotFound(() => {
-         Ui.showView("view-404");
-      }) */
-      .init();
-}
 
 /**
  * Function: init
@@ -34,14 +20,19 @@ const initAfterDOM = () => {
    Dom.init();
    Events.init();
    User.init();
-   initRouter();
 
-   // check if the current route is "/", if so, show the start view
-   if (router.getCurrentPath() !== "/") {
-      router.navigate("/");
-   }
-
-   Ui.showView("start");
+   // Initialize router after DOM elements are available
+   initRouter({
+      home: () => Ui.showView("home"), // Show home view for home route
+      game: () => {
+         // Check if game is running to determine if we can show game view
+         if (!Game.isRunning) {
+            window.location.hash = "home";
+            return;
+         }
+         Ui.showView("game");
+      },
+   });
 
    if (Config.DEV_MODE) {
       import("./modules/utilities/debug.mjs").then(({ Debug }) => {

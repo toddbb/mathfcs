@@ -9,27 +9,33 @@ import User from "./user.mjs";
  * Handles game logic and state
  */
 const Game = {
-   correctAnswerIndex: null,
-   choices: [],
    difficulty: null,
+   isRunning: false,
+   questionData: {},
 
    checkAnswer(selectedChoice) {
+      let keyCorrectOrIncorrect = null;
       // Utils.log(`User selected choice: ${selectedChoice}`, Utils.ENUM.LOG.INFO);
-      if (parseInt(selectedChoice) === this.correctAnswerIndex) {
+      if (parseInt(selectedChoice) === this.questionData.correctAnswerIndex) {
          // Utils.log("User selected the correct answer!", Utils.ENUM.LOG.INFO);
-         User.updateScore(1);
+         User.user.score += 1;
+         keyCorrectOrIncorrect = "correct";
          // Show success overlay animation
+         Ui.updateScoreDisplay(User.user.score);
          Ui.showSuccessOverlay().then(() => {
             this.next();
          });
       } else {
          // Utils.log("User selected the wrong answer.", Utils.ENUM.LOG.INFO);
-
-         // Show incorrect overlay animation
-         Ui.showIncorrectOverlay().then(() => {
-            //this.next();
-         });
+         keyCorrectOrIncorrect = "incorrect";
+         // Show incorrect overlay animation and do not proceed to next question
+         Ui.showIncorrectOverlay().then(() => {});
       }
+
+      // Update user stats
+      User.user.levels[this.difficulty][keyCorrectOrIncorrect] += 1;
+      User.user.operations[MathModule.operation][keyCorrectOrIncorrect] += 1;
+      User.set();
    },
 
    insertQuestion(question) {
@@ -45,13 +51,11 @@ const Game = {
    },
 
    async next() {
-      const nextData = await MathModule.generateData(this.difficulty);
-      const { question, choices, correctAnswerIndex } = nextData;
-      Utils.log(`Next question generated: ${nextData.question}`, Utils.ENUM.LOG.INFO);
+      this.questionData = await MathModule.generateData(this.difficulty);
+      Utils.log(`Next question generated: ${this.questionData.question}`, Utils.ENUM.LOG.INFO);
       // Utils.log(`Choices: ${nextData.choices}`, Utils.ENUM.LOG.INFO);
-      this.insertQuestion(question);
-      this.populateChoices(choices);
-      this.correctAnswerIndex = correctAnswerIndex;
+      this.insertQuestion(this.questionData.question);
+      this.populateChoices(this.questionData.choices);
    },
 
    setDifficulty(difficulty) {
@@ -62,6 +66,7 @@ const Game = {
       Ui.updateScoreDisplay(User.user.score);
       this.insertQuestion("");
       this.populateChoices([]);
+      this.isRunning = true;
    },
 
    async init() {

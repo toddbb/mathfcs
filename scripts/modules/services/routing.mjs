@@ -1,175 +1,70 @@
+import { Config } from "../config/config.mjs";
+
 /**
- * Simple hash-based router for single-page applications
+ * Minimal hash-based router for simple SPAs
  * Usage:
- *   import Router from './router.mjs';
- *   const router = new Router();
- *   router.addRoute('/', () => { ... });
- *   router.addRoute('/about', () => { ... });
- *   router.init();
+ *   import { initRouter, navigate } from './router.mjs';
+ *   initRouter({ home: showHome, game: showGame });
  */
 
-class Router {
-   constructor() {
-      this.routes = {};
-      this.currentRoute = null;
-      this.notFoundHandler = null;
-   }
+let routes = {};
+let currentView = null;
 
-   /**
-    * Add a route handler
-    * @param {string} path - Route path (e.g., '/', '/about', '/user/:id')
-    * @param {Function} handler - Function to call when route matches
-    */
-   addRoute(path, handler) {
-      this.routes[path] = handler;
-      return this;
-   }
+/**
+ * Initialize the router with your view functions
+ * @param {Object} routeMap - Object mapping route names to handler functions
+ * @param {string} defaultRoute - Default route (default: 'home')
+ */
+export function initRouter(routeMap, defaultRoute = "home") {
+   routes = routeMap;
 
-   /**
-    * Set a handler for when no route matches
-    * @param {Function} handler - 404 handler function
-    */
-   setNotFound(handler) {
-      this.notFoundHandler = handler;
-      return this;
-   }
+   // console.log("Router initialized with routes:", Object.keys(routes));
+   // console.log(routes);
 
-   /**
-    * Navigate to a specific route
-    * @param {string} path - Path to navigate to
-    * @param {boolean} addToHistory - Whether to add to browser history (default: true)
-    */
-   navigate(path, addToHistory = true) {
-      if (addToHistory) {
-         window.location.hash = path;
-      } else {
-         this.handleRoute(path);
-      }
-   }
+   // Listen for hash changes
+   window.addEventListener("hashchange", handleRouteChange);
 
-   /**
-    * Get the current path from the hash
-    * @returns {string} Current path
-    */
-   getCurrentPath() {
-      const hash = window.location.hash.slice(1);
-      return hash || "/";
-   }
+   // Handle initial load
+   handleRouteChange();
+}
 
-   /**
-    * Parse route parameters from path
-    * @param {string} routePath - Route pattern (e.g., '/user/:id')
-    * @param {string} actualPath - Actual path (e.g., '/user/123')
-    * @returns {Object|null} Parameters object or null if no match
-    */
-   parseParams(routePath, actualPath) {
-      const routeParts = routePath.split("/").filter(Boolean);
-      const actualParts = actualPath.split("/").filter(Boolean);
+/**
+ * Handle route changes
+ */
+function handleRouteChange() {
+   const hash = window.location.hash.slice(1) || "home";
+   const route = hash.split("/")[0]; // Get first part (e.g., 'game' from '#game/123')
 
-      // Handle root route
-      if (routePath === "/" && actualPath === "/") {
-         return {};
-      }
+   // console.log(`Navigating to route: ${route}`);
 
-      if (routeParts.length !== actualParts.length) {
-         return null;
-      }
-
-      const params = {};
-
-      for (let i = 0; i < routeParts.length; i++) {
-         if (routeParts[i].startsWith(":")) {
-            const paramName = routeParts[i].slice(1);
-            params[paramName] = decodeURIComponent(actualParts[i]);
-         } else if (routeParts[i] !== actualParts[i]) {
-            return null;
-         }
-      }
-
-      return params;
-   }
-
-   /**
-    * Handle the current route
-    * @param {string} path - Path to handle
-    */
-   handleRoute(path) {
-      this.currentRoute = path;
-
-      // Try exact match first
-      if (this.routes[path]) {
-         this.routes[path]({});
-         return;
-      }
-
-      // Try pattern matching for routes with parameters
-      for (const [routePath, handler] of Object.entries(this.routes)) {
-         if (routePath.includes(":")) {
-            const params = this.parseParams(routePath, path);
-            if (params !== null) {
-               handler(params);
-               return;
-            }
-         }
-      }
-
-      // No match found
-      if (this.notFoundHandler) {
-         this.notFoundHandler();
-      } else {
-         console.warn(`No route found for: ${path}`);
-      }
-   }
-
-   /**
-    * Initialize the router and start listening for hash changes
-    */
-   init() {
-      // Handle hash changes
-      window.addEventListener("hashchange", () => {
-         const path = this.getCurrentPath();
-         this.handleRoute(path);
-      });
-
-      // Handle initial route
-      const initialPath = this.getCurrentPath();
-      this.handleRoute(initialPath);
-
-      return this;
-   }
-
-   /**
-    * Get query parameters from URL
-    * @returns {Object} Query parameters as key-value pairs
-    */
-   getQueryParams() {
-      const params = {};
-      const queryString = window.location.search.slice(1);
-
-      if (queryString) {
-         queryString.split("&").forEach((param) => {
-            const [key, value] = param.split("=");
-            params[decodeURIComponent(key)] = decodeURIComponent(value || "");
-         });
-      }
-
-      return params;
-   }
-
-   /**
-    * Go back in history
-    */
-   back() {
-      window.history.back();
-   }
-
-   /**
-    * Go forward in history
-    */
-   forward() {
-      window.history.forward();
+   if (routes[route]) {
+      currentView = route;
+      routes[route]();
+   } else if (routes.home) {
+      // Fallback to home if route not found
+      window.location.hash = "home";
    }
 }
 
-const router = new Router();
-export default router;
+/**
+ * Navigate to a route programmatically
+ * @param {string} route - Route name (e.g., 'game', 'home')
+ */
+export function navigate(route) {
+   window.location.hash = route;
+}
+
+/**
+ * Get current route name
+ * @returns {string} Current route
+ */
+export function getCurrentRoute() {
+   return currentView;
+}
+
+if (Config.DEV_MODE) {
+   import("../utilities/debug.mjs").then(({ Debug }) => {
+      window.Routes = routes;
+      window.currentView = currentView;
+   });
+}

@@ -1,5 +1,6 @@
 import * as Utils from "../utilities/utils.mjs";
 import Dom from "./dom.mjs";
+import Game from "./Game.mjs";
 
 /**
  * METHOD: UI Module
@@ -24,6 +25,15 @@ const Ui = {
             resolve(true);
          });
       });
+   },
+
+   showLevelDisplay(isShow) {
+      if (isShow) {
+         Dom.levelDisplayValue.textContent = `${Game.difficulty}`;
+         Utils.show(Dom.levelDisplay);
+      } else {
+         Utils.hide(Dom.levelDisplay);
+      }
    },
 
    updateScoreDisplay(newScore) {

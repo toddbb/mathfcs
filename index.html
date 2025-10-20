@@ -12,7 +12,8 @@
       <header class="flex flex-row w-full justify-center align-center">
          <div class="container flex flex-row justify-between py-4">
             <img class="icon icon-home" src="./assets/icons/home.svg" alt="Home" class="src" />
-            <div class="points-container flex flex-row gap-4 text-xl">
+            <div class="level-display nodisplay">Cấp Độ <span class="level-display-value">0</span></div>
+            <div class="points-container flex flex-row items-center gap-2 text-xl">
                <span>⭐</span>
                <span class="score-display">0</span>
             </div>
@@ -20,24 +21,24 @@
       </header>
       <main class="flex flex-row justify-center w-full h-full">
          <div class="container flex flex-col h-full items-center">
-            <div class="view view-start flex flex-col items-center justify-evenly gap-8 h-full py-8">
+            <div class="view view-home flex flex-col items-center justify-evenly gap-8 h-full py-8">
                <h1 class="mb-8">Bài Kiểm Tra Toán</h1>
                <p>Chọn mức độ khó:</p>
                <div class="difficult-levels grid grid-rows-2 grid-cols-2 gap-6 w-full">
-                  <div class="btn-difficulty btn-easy flex flex-col justify-center items-center gap-1 p-3" data-difficulty="easy">
-                     <h4 class="level">Cấp độ 1</h4>
+                  <div class="btn-difficulty btn-easy flex flex-col justify-center items-center gap-1 p-3" data-difficulty="1">
+                     <h4 class="level">Cấp Độ 1</h4>
                      <p class="description">Dễ</p>
                   </div>
-                  <div class="btn-difficulty btn-easy flex flex-col justify-center items-center gap-1 p-3" data-difficulty="medium">
-                     <h3 class="level">Cấp độ 2</h3>
+                  <div class="btn-difficulty btn-easy flex flex-col justify-center items-center gap-1 p-3" data-difficulty="2">
+                     <h3 class="level">Cấp Độ 2</h3>
                      <p class="description">Trung bình</p>
                   </div>
-                  <div class="btn-difficulty btn-easy flex flex-col justify-center items-center gap-1 p-3" data-difficulty="hard">
-                     <h3 class="level">Cấp độ 3</h3>
+                  <div class="btn-difficulty btn-easy flex flex-col justify-center items-center gap-1 p-3" data-difficulty="3">
+                     <h3 class="level">Cấp Độ 3</h3>
                      <p class="description">Khó</p>
                   </div>
-                  <div class="btn-difficulty btn-easy flex flex-col justify-center items-center gap-1 p-3" data-difficulty="expert">
-                     <h3 class="level">Cấp độ 4</h3>
+                  <div class="btn-difficulty btn-easy flex flex-col justify-center items-center gap-1 p-3" data-difficulty="4">
+                     <h3 class="level">Cấp Độ 4</h3>
                      <p class="description">Chuyên gia</p>
                   </div>
                </div>

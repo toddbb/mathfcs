@@ -1,4 +1,5 @@
-import router from "../services/routing.mjs";
+// import router from "../services/routing.mjs";
+import { navigate } from "../services/routing.mjs";
 import * as Utils from "../utilities/utils.mjs";
 import Dom from "./dom.mjs";
 import Game from "./Game.mjs";
@@ -15,8 +16,8 @@ const Events = {
             const selectedDifficulty = e.target.closest(".btn-difficulty").dataset.difficulty;
             Game.setDifficulty(selectedDifficulty);
             Game.init();
-            router.navigate("game");
-            Ui.showView("game");
+            Ui.showLevelDisplay(true);
+            navigate("game");
          });
       });
 
@@ -25,6 +26,12 @@ const Events = {
             const selectedChoice = e.target.dataset.choice;
             Game.checkAnswer(selectedChoice);
          });
+      });
+
+      Dom.iconHome.addEventListener("click", () => {
+         Ui.showLevelDisplay(false);
+         Game.difficulty = null; // Reset game state
+         navigate("home");
       });
    },
 };

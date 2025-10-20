@@ -27,23 +27,36 @@ header {
    box-shadow: var(--shadow);
 }
 
-
-/************* VIEW: START  ***************************/
-.btn-reset {
-   background-color: rgb(254, 201, 201);
-   font-size: 0.8rem;
+.level-display {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 30px;
+    left: 50%;
+    font-size: 1.5rem;
+    color: #2a64a2;
+    font-family: monospace;
 }
 
+.points-container {
+   font-size: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+
 .score-display {
-   width: 80px;
+   max-width: 60px;
    text-align: left;
 }
 
+
+/************* VIEW: START  ***************************/
+
+
+
 .btn-difficulty {
-   height: 70px;
+   height: 80px;
    width: 120px;
    font-size: 0.8rem;
-   border-radius: 3px;
+   border-radius: 6px;
    cursor: pointer;
    color:#f6f6f6
 }

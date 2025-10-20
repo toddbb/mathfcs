@@ -10,6 +10,30 @@ const User = {
    user: {
       name: null,
       score: 0,
+      levels: {
+         1: {
+            correct: 0,
+            incorrect: 0,
+         },
+         2: {
+            correct: 0,
+            incorrect: 0,
+         },
+         3: {
+            correct: 0,
+            incorrect: 0,
+         },
+         4: {
+            correct: 0,
+            incorrect: 0,
+         },
+      },
+      operations: {
+         "+": { correct: 0, incorrect: 0 },
+         "-": { correct: 0, incorrect: 0 },
+         "*": { correct: 0, incorrect: 0 },
+         "/": { correct: 0, incorrect: 0 },
+      },
    },
 
    // Create a debounced version of the save function
@@ -26,12 +50,6 @@ const User = {
       this.debouncedSet();
    },
 
-   updateScore(points) {
-      this.user.score += points;
-      this.set();
-      Ui.updateScoreDisplay(this.user.score);
-   },
-
    reset() {
       this.user = { name: "Guest", score: 0 };
       this.set();
@@ -42,12 +60,13 @@ const User = {
       Utils.log("Initializing User Module", Utils.ENUM.LOG.INIT);
       // Use AppStorage consistently instead of direct localStorage access
       const userData = AppStorage().local.get("user_data");
+      // check if userData has all of the keys as this.user; if not, initialize missing keys, but don't remove existing data
       if (userData) {
-         User.user = userData;
+         User.user = { ...User.user, ...userData }; // update missing keys
          Utils.log("User data loaded from storage", "👤");
       } else {
          Utils.log("No user data found, initializing new user.", "👤");
-         User.user = { name: "Guest", score: 0 };
+         // User.user = { name: "Guest", score: 0}; 
          // Save the new user data immediately (not debounced for initial setup)
          User.set();
       }

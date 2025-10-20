@@ -8,11 +8,32 @@ const MathModule = {
    correctAnswer: null,
    correctAnswerIndex: null,
    difficulty: null,
-   difficultyOperators: {
-      easy: ["+"],
-      medium: ["+", "-"],
-      hard: ["+", "-", "*"],
-      expert: ["+", "-", "*", "/"],
+   operation: null,
+   difficultyOperations: {
+      1: ["+"],
+      2: ["+", "-"],
+      3: ["+", "-", "*"],
+      4: ["+", "-", "*", "/"],
+   },
+   difficultySettings: {
+      1: {
+         "+": [1, 10],
+      },
+      2: {
+         "+": [1, 20],
+         "-": [1, 10],
+      },
+      3: {
+         "+": [10, 30],
+         "-": [1, 20],
+         "*": [1, 10],
+      },
+      4: {
+         "+": [10, 40],
+         "-": [10, 30],
+         "*": [1, 12],
+         "/": [1, 10],
+      },
    },
 
    async generateData(difficulty) {
@@ -25,32 +46,37 @@ const MathModule = {
       return {
          question: this.question,
          choices: this.choices,
+         correctAnswer: this.correctAnswer,
+         operation: this.operation,
+         difficulty: this.difficulty,
          correctAnswerIndex: this.correctAnswerIndex,
       };
    },
 
-   _getRandomOperator() {
-      const operators = this.difficultyOperators[this.difficulty];
-      const randomIndex = Utils.getRandomInclusive(0, operators.length - 1);
-      return operators[randomIndex];
+   _getRandomOperation() {
+      const operations = this.difficultyOperations[this.difficulty];
+      const randomIndex = Utils.getRandomInclusive(0, operations.length - 1);
+      return operations[randomIndex];
    },
 
    async _generateQuestion() {
-      const operator = this._getRandomOperator();
-      let num1 = Utils.getRandomInclusive(1, 10);
-      let num2 = Utils.getRandomInclusive(1, 10);
+      this.operation = this._getRandomOperation();
+      const minNum = this.difficultySettings[this.difficulty][this.operation][0];;
+      const maxNum = this.difficultySettings[this.difficulty][this.operation][1];
+      let num1 = Utils.getRandomInclusive(minNum, maxNum);
+      let num2 = Utils.getRandomInclusive(minNum, maxNum);
 
       // For subtraction, ensure num1 is always >= num2 to avoid negative results
-      if (operator === "-" && num1 < num2) {
+      if (this.operation === "-" && num1 < num2) {
          // Swap the numbers to ensure num1 >= num2
          [num1, num2] = [num2, num1];
-      } else if (operator === "/") {
+      } else if (this.operation === "/") {
          // Ensure num1 is a multiple of num2 to avoid fractional answers
          num2 = Utils.getRandomInclusive(1, 10);
          num1 = num2 * Utils.getRandomInclusive(1, 10);
       }
 
-      const question = `${num1} ${operator} ${num2}`;
+      const question = `${num1} ${this.operation} ${num2}`;
       // console.log(`📖 Generated question: ${question}`);
       return question;
    },

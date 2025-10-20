@@ -6,9 +6,12 @@ const Dom = {
    Views: {},
 
    init() {
-      this.Views.start = document.querySelector(".view-start");
+      this.Views.home = document.querySelector(".view-home");
       this.Views.game = document.querySelector(".view-game");
       this.iconHome = document.querySelector(".icon-home");
+      this.levelDisplay = document.querySelector(".level-display");
+      this.levelDisplayValue = document.querySelector(".level-display-value");
+      this.scoreDisplay = document.querySelector(".score-display");
       this.btnDifficulty = document.querySelectorAll(".btn-difficulty");
       this.question = document.querySelector(".question");
       this.btnChoices = document.querySelectorAll(".btn-choice");
