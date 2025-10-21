@@ -11,16 +11,20 @@
    <body>
       <header class="flex flex-row w-full justify-center align-center">
          <div class="container flex flex-row justify-between py-4">
-            <img class="icon icon-home" src="./assets/icons/home.svg" alt="Home" class="src" />
+            <img class="icon icon-home cursor-pointer" src="./assets/icons/home.svg" alt="Home" class="src" />
             <div class="level-display nodisplay">Cấp Độ <span class="level-display-value">0</span></div>
-            <div class="points-container flex flex-row items-center gap-2 text-xl">
-               <span>⭐</span>
-               <span class="score-display">0</span>
+            <div class="header-info flex flex-row gap-4 items-center">
+               <div class="points-container flex flex-row items-center gap-2">
+                  <span>⭐</span>
+                  <span class="score-display">0</span>
+               </div>
+               <div class="btnSummary cursor-pointer text-2xl">📈</div>
             </div>
          </div>
       </header>
       <main class="flex flex-row justify-center w-full h-full">
          <div class="container flex flex-col h-full items-center">
+            <!-- View: Home -->
             <div class="view view-home flex flex-col items-center justify-evenly gap-8 h-full py-8">
                <h1 class="mb-8">Bài Kiểm Tra Toán</h1>
                <p>Chọn mức độ khó:</p>
@@ -43,6 +47,8 @@
                   </div>
                </div>
             </div>
+
+            <!-- View: Game -->
             <div class="view view-game flex flex-col items-center justify-evenly gap-3 py-4 w-full nodisplay">
                <div class="question flex flex-col items-center justify-center w-full">12 + 23 =</div>
                <div class="multiple-choice-container grid grid-rows-2 grid-cols-2 gap-4 w-full">
@@ -63,6 +69,47 @@
       <!-- Incorrect Overlay -->
       <div class="incorrect-overlay nodisplay">
          <div class="incorrect-animation">❌</div>
+      </div>
+
+      <!-- Modal: Summary -->
+      <div class="modal modal-summary flex w-full h-full nodisplay">
+         <div class="modal-wrapper container grid gap-8 w-full h-full">
+            <div class="modal-close flex items-center justify-center text-center icon cursor-pointer">✖️</div>
+            <!-- First Row: Main Stats -->
+            <div class="stats-main flex flex-row items-center justify-between w-full gap-3 px-10">
+               <div class="stats-main-stat flex flex-col items-center justify-center gap-1">
+                  <span class="stats-main-stat-value total-questions text-xl" data-stat="attempts">0</span>
+                  <span class="stats-main-stat-label text-center text-sm">Total Attempts</span>
+               </div>
+               <div class="stats-main-stat flex flex-col items-center justify-center gap-1">
+                  <span class="stats-main-stat-value correct-answers text-xl" data-stat="correct">0</span>
+                  <span class="stats-main-stat-label text-center text-sm">Correct Answers</span>
+               </div>
+               <div class="stats-main-stat flex flex-col items-center justify-center gap-1">
+                  <span class="stats-main-stat-value incorrect-answers text-xl" data-stat="streak">0</span>
+                  <span class="stats-main-stat-label text-center text-sm">Current Streak</span>
+               </div>
+               <div class="stats-main-stat flex flex-col items-center justify-center gap-1">
+                  <span class="stats-main-stat-value longest-streak text-xl" data-stat="longest">0</span>
+                  <span class="stats-main-stat-label text-center text-sm">Longest Streak</span>
+               </div>
+            </div>
+            <!-- Second Row: Badges (future dev) -->
+            <div class="stats-badges flex flex-row items-center w-full gap-3 nodisplay"></div>
+            <!-- Third Row: Charts -->
+            <div class="stats-charts flex flex-col flex-wrap items-center w-full gap-3">
+               <div class="chart-selector flex flex-row text-sm">
+                  <div class="chart-btn btn-by-level flex items-center justify-center text-sm cursor-pointer active" data-chart="levels">Level</div>
+                  <div class="chart-btn btn-by-operation flex items-center justify-center cursor-pointer text-sm" data-chart="operations">Operation</div>
+               </div>
+               <div class="chart-container flex flex-col items-center justify-center gap-2 w-full" data-chart-type="level">
+                  <h4 class="chart-title">By Level</h4>
+               </div>
+               <div class="chart-container flex flex-col items-center justify-center gap-2 w-full nodisplay" data-chart-type="operation">
+                  <h4 class="chart-title">By Operation</h4>
+               </div>
+            </div>
+         </div>
       </div>
 
       <script src="./scripts/script.js" type="module"></script>

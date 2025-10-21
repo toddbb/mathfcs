@@ -3,6 +3,7 @@ import Dom from "./modules/controllers/dom.mjs";
 import Events from "./modules/controllers/events.mjs";
 import Game from "./modules/controllers/Game.mjs";
 import MathModule from "./modules/controllers/maths.mjs";
+import modalSummary from "./modules/controllers/modalSummary.mjs";
 import Ui from "./modules/controllers/ui.mjs";
 import User from "./modules/controllers/user.mjs";
 import { initRouter } from "./modules/services/routing.mjs";
@@ -23,16 +24,12 @@ const initAfterDOM = () => {
 
    // Initialize router after DOM elements are available
    initRouter({
-      home: () => Ui.showView("home"), // Show home view for home route
-      game: () => {
-         // Check if game is running to determine if we can show game view
-         if (!Game.isRunning) {
-            window.location.hash = "home";
-            return;
-         }
-         Ui.showView("game");
-      },
+      home: () => Ui.showView("home"),
+      game: () => Ui.showView("game"),
    });
+
+   /// FOR DEVELOPMENT OF MODAL ONLY -- simulate event triggered
+   // Dom.btnSummary.click();
 
    if (Config.DEV_MODE) {
       import("./modules/utilities/debug.mjs").then(({ Debug }) => {
@@ -47,6 +44,7 @@ const initAfterDOM = () => {
          window.User = User;
          window.AppStorage = AppStorage;
          window.MathModule = MathModule;
+         window.modalSummary = modalSummary;
       });
    }
 };

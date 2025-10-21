@@ -1,3 +1,4 @@
+import { navigate } from "../services/routing.mjs";
 import * as Utils from "../utilities/utils.mjs";
 import Dom from "./dom.mjs";
 import Game from "./Game.mjs";
@@ -7,6 +8,16 @@ import Game from "./Game.mjs";
  * Handles UI interactions and updates
  */
 const Ui = {
+   /// Event handlers
+   handleDifficultyLevelClick(e) {
+      const selectedDifficulty = e.target.closest(".btn-difficulty").dataset.difficulty;
+      Game.setDifficulty(selectedDifficulty);
+      Game.init();
+      this.showLevelDisplay(true);
+      navigate("game");
+   },
+
+   /// View Management
    hideAllViews() {
       return new Promise((resolve) => {
          // Utils.log(`Hiding all views`, Utils.ENUM.LOG.INFO);
@@ -18,6 +29,12 @@ const Ui = {
    },
 
    showView(viewName) {
+      // Prevent access to game if the game is not running
+      if (!Game.isRunning && viewName === "game") {
+         window.location.hash = "home";
+         return Promise.resolve(false);
+      }
+
       return new Promise((resolve) => {
          // Utils.log(`Switching to view: ${viewName}`, Utils.ENUM.LOG.INFO);
          Ui.hideAllViews().then(() => {
@@ -27,6 +44,7 @@ const Ui = {
       });
    },
 
+   /// Header Info
    showLevelDisplay(isShow) {
       if (isShow) {
          Dom.levelDisplayValue.textContent = `${Game.difficulty}`;
@@ -40,6 +58,7 @@ const Ui = {
       Dom.scoreDisplay.textContent = newScore;
    },
 
+   /// Overlay Management
    showIncorrectOverlay() {
       return new Promise((resolve) => {
          //Utils.log("Showing incorrect overlay", Utils.ENUM.LOG.INFO);
@@ -49,7 +68,7 @@ const Ui = {
          setTimeout(() => {
             Utils.hide(Dom.incorrectOverlay);
             resolve(true);
-         }, 2000);
+         }, 1500);
       });
    },
 
@@ -66,6 +85,42 @@ const Ui = {
             resolve(true);
          }, 750);
       });
+   },
+
+   /// Modal Management
+   showModal(modalName) {
+      switch (modalName) {
+         case "summary":
+            Utils.show(Dom.modalSummary);
+            // disable background scrolling, clicking, and focus
+            Ui.disableBackgroundInteraction(true);
+            break;
+         default:
+            Utils.log(`Unknown modal: ${modalName}`, Utils.ENUM.LOG.WARN);
+      }
+   },
+
+   closeModal(modalName) {
+      switch (modalName) {
+         case "summary":
+            Utils.hide(Dom.modalSummary);
+            Ui.disableBackgroundInteraction(false);
+            break;
+         default:
+            Utils.log(`Unknown modal: ${modalName}`, Utils.ENUM.LOG.WARN);
+      }
+   },
+
+   disableBackgroundInteraction(disable = false) {
+      if (disable) {
+         document.body.style.overflow = "hidden"; // Disable scrolling
+         Dom.Views.home.style.pointerEvents = "none"; // Disable clicking
+         Dom.Views.game.style.pointerEvents = "none"; // Disable clicking
+      } else {
+         document.body.style.overflow = ""; // Enable scrolling
+         Dom.Views.home.style.pointerEvents = ""; // Enable clicking
+         Dom.Views.game.style.pointerEvents = ""; // Enable clicking
+      }
    },
 };
 

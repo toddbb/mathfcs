@@ -10,6 +10,8 @@ const User = {
    user: {
       name: null,
       score: 0,
+      streak: 0,
+      longest: 0,
       levels: {
          1: {
             correct: 0,
@@ -56,6 +58,44 @@ const User = {
       Ui.updateScoreDisplay(this.user.score);
    },
 
+   updateStats(isCorrect = true, operation, level) {
+      if (isCorrect) {
+         this.user.levels[level].correct += 1;
+         this.user.operations[operation].correct += 1;
+         this.user.streak += 1;
+         if (this.user.streak > this.user.longest) {
+            this.user.longest = this.user.streak;
+         }
+      } else {
+         this.user.levels[level].incorrect += 1;
+         this.user.operations[operation].incorrect += 1;
+         this.user.streak = 0;
+      }
+      this.set();
+   },
+
+   Stats: {
+      getTotals() {
+         const levels = User.user.levels;
+         let attempts = 0;
+         let correct = 0;
+         let incorrect = 0;
+         for (const level in levels) {
+            attempts += levels[level].correct + levels[level].incorrect;
+            correct += levels[level].correct;
+            incorrect += levels[level].incorrect;
+         }
+         return { attempts, correct, incorrect };
+      },
+      getTotalCorrect() {
+         const levels = User.user.levels;
+         let total = 0;
+      },
+      get() {
+         return { ...User.user, ...this.getTotals() };
+      },
+   },
+
    init() {
       Utils.log("Initializing User Module", Utils.ENUM.LOG.INIT);
       // Use AppStorage consistently instead of direct localStorage access
@@ -66,7 +106,7 @@ const User = {
          Utils.log("User data loaded from storage", "👤");
       } else {
          Utils.log("No user data found, initializing new user.", "👤");
-         // User.user = { name: "Guest", score: 0}; 
+         // User.user = { name: "Guest", score: 0};
          // Save the new user data immediately (not debounced for initial setup)
          User.set();
       }

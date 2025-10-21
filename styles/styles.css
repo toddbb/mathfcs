@@ -6,7 +6,11 @@
 
 .icon {
    cursor: pointer;
-   
+}
+
+
+* {
+   user-select: none;
 }
 
 
@@ -175,7 +179,7 @@ header {
 
 .incorrect-animation {
    font-size: 8rem;
-   animation: thumbsDownAnimation 2s ease-out forwards;
+   animation: thumbsDownAnimation 1500ms ease-out forwards;
    transform: scale(0);
 }
 
@@ -196,6 +200,96 @@ header {
       transform: scale(1) rotate(0deg);
       opacity: 0;
    }
+}
+
+
+/************************    MODAL: SUMMARY     *******************/
+.modal-summary {
+   position: absolute;
+   top: 0;
+   left: 0;
+   background-color: var(--gray-50);
+   padding: 10px;
+}
+
+.modal-summary > .container {
+   position: relative;
+   max-width: 720px;
+   padding: 0;      /* padding on the parent modal */
+   grid-template-rows: minmax(100px, 1fr) 4fr;
+}
+
+.modal-close {
+   position: absolute;
+   height: 2rem;
+   width: 2rem;
+   right: 0px;
+   top: -5px;
+   padding: 4px;
+   cursor: pointer;
+   border: 1px solid var(--gray-300);
+   border-radius: 50%;
+   z-index: 1001;
+}
+
+.modal-close:hover {
+   filter: brightness(0.9);
+}
+
+
+
+
+
+/************************    CHARTS     *******************/
+
+/** Chart Selector **/
+.chart-selector {
+   border-radius: 18px;
+   overflow: hidden;
+   margin-bottom: 2rem;
+}
+.chart-btn {
+   padding: 6px 12px;
+   background-color: var(--gray-300);
+   height: 36px;
+   width: 100px;
+   color: var(--gray-400);
+   transition: background-color 200ms, color 200ms;
+}
+
+.chart-btn:nth-first-child {
+   border-top-left-radius: 18px;
+   border-bottom-left-radius: 18px;
+}
+
+.chart-btn:nth-last-child {
+   border-top-right-radius: 18px;
+   border-bottom-right-radius: 18px;
+}
+
+.chart-btn.active {
+   background-color: var(--gray-700); 
+   color: var(--gray-50);
+}
+
+.chart-btn:hover:not(.active) {
+   background-color: var(--gray-200);
+   color: var(--gray-500);
+}
+
+/** Chart Container and Elements **/
+.chart-container {
+   min-width: 300px;
+   max-width: 900px;
+   width: 100%;
+}
+.chart-container svg {
+   color: #37ce67; /* Theme color: change this to match your design */
+   font-family: system-ui, Arial, sans-serif;
+}
+
+.chart-container rect[tabindex="0"]:focus {
+   outline: 2px dashed #555;
 }
 
 
