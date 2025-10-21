@@ -14,6 +14,14 @@
    user-select: none;
 }
 
+.svg {
+  fill: none;
+  stroke: #334474; /* or currentColor if you want it to inherit text color */
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 
 
 /***************************************************************************/
@@ -97,7 +105,7 @@ header {
    height: 200px;
    border: 2px solid var(--gray-300);
    border-radius: 10px;
-   font-size: 2rem;
+   font-size: 3rem;
 }
 
 .btn-choice {
