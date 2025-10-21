@@ -18,7 +18,7 @@
                   <span>⭐</span>
                   <span class="score-display">0</span>
                </div>
-               <button class="btnSummary cursor-pointer text-2xl">📈</button>
+               <img class="btnSummary cursor-pointer text-2xl" src="./assets/icons/bar-chart-2.svg" alt="Stats" />
             </div>
          </div>
       </header>
@@ -74,7 +74,13 @@
       <!-- Modal: Summary -->
       <div class="modal modal-summary flex w-full h-full nodisplay">
          <div class="modal-wrapper container grid gap-8 w-full h-full">
-            <div class="modal-close flex items-center justify-center text-center icon cursor-pointer">✖️</div>
+            <!-- Zero Row: Header and Close -->
+            <div class="modal-header flex flex-row items-center justify-between w-full">
+               <h2 class="modal-title text-xl">Statistics</h2>
+               <div class="modal-close flex items-center justify-center text-center icon cursor-pointer">
+                  <img src="./assets/icons/x-circle.svg" alt="Close" />
+               </div>
+            </div>
             <!-- First Row: Main Stats -->
             <div class="stats-main flex flex-row items-center justify-between w-full gap-3 px-10">
                <div class="stats-main-stat flex flex-col items-center justify-center gap-1">
