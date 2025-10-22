@@ -19,17 +19,17 @@ const Game = {
       if (parseInt(selectedChoice) === this.questionData.correctAnswerIndex) {
          // Utils.log("User selected the correct answer!", Utils.ENUM.LOG.INFO);
          User.user.score += 1;
-         // Show success overlay animation
+         // Show success animation
          Ui.updateScoreDisplay(User.user.score);
          User.updateStats(true, this.questionData.operation, this.difficulty);
-         Ui.showSuccessOverlay().then(() => {
+         Ui.showSuccessAnimation().then(() => {
             this.next();
          });
       } else {
          // Utils.log("User selected the wrong answer.", Utils.ENUM.LOG.INFO);
          User.updateStats(false, this.questionData.operation, this.difficulty);
-         // Show incorrect overlay animation and do not proceed to next question
-         Ui.showIncorrectOverlay().then(() => {});
+         // Show incorrect animation and do not proceed to next question
+         Ui.showIncorrectAnimation().then(() => {});
       }
    },
 

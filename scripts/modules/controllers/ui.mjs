@@ -59,29 +59,33 @@ const Ui = {
    },
 
    /// Overlay Management
-   showIncorrectOverlay() {
+   showIncorrectAnimation() {
       return new Promise((resolve) => {
          //Utils.log("Showing incorrect overlay", Utils.ENUM.LOG.INFO);
-         // Show the overlay
+         // Show the overlay & animation
          Utils.show(Dom.incorrectOverlay);
+         Utils.show(Dom.incorrectAnimation);
          // Hide it after the animation completes (2s)
          setTimeout(() => {
             Utils.hide(Dom.incorrectOverlay);
+            Utils.hide(Dom.incorrectAnimation);
             resolve(true);
          }, 1500);
       });
    },
 
-   showSuccessOverlay() {
+   showSuccessAnimation() {
       return new Promise((resolve) => {
          // Utils.log("Showing success overlay", Utils.ENUM.LOG.INFO);
 
-         // Show the overlay
+         // Show the overlay & animation
          Utils.show(Dom.successOverlay);
+         Utils.show(Dom.successAnimation);
 
          // Hide it after the animation completes (1.5s)
          setTimeout(() => {
             Utils.hide(Dom.successOverlay);
+            Utils.hide(Dom.successAnimation);
             resolve(true);
          }, 750);
       });
@@ -113,11 +117,11 @@ const Ui = {
 
    disableBackgroundInteraction(disable = false) {
       if (disable) {
-         document.body.style.overflow = "hidden"; // Disable scrolling
+         // document.body.style.overflow = "hidden"; // Disable scrolling
          Dom.Views.home.style.pointerEvents = "none"; // Disable clicking
          Dom.Views.game.style.pointerEvents = "none"; // Disable clicking
       } else {
-         document.body.style.overflow = ""; // Enable scrolling
+         // document.body.style.overflow = ""; // Enable scrolling
          Dom.Views.home.style.pointerEvents = ""; // Enable clicking
          Dom.Views.game.style.pointerEvents = ""; // Enable clicking
       }

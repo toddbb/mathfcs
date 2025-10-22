@@ -23,7 +23,9 @@ const Dom = {
       this.btnChoices = document.querySelectorAll(".btn-choice");
       this.scoreDisplay = document.querySelector(".score-display");
       this.successOverlay = document.querySelector(".success-overlay");
+      this.successAnimation = document.querySelector(".success-animation");
       this.incorrectOverlay = document.querySelector(".incorrect-overlay");
+      this.incorrectAnimation = document.querySelector(".incorrect-animation");
 
       /// Summary Model and Elements
       this.modalSummary = document.querySelector(".modal-summary");

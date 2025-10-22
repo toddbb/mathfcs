@@ -19,28 +19,33 @@ const _operationsMap = {
 };
 
 export const Charts = {
-   convertForCharts(userStats, chartType) {
-      // This function can be expanded to convert user stats into chart data format
-      // For example, converting level stats or operation stats into {label, value} format
-      // Currently, it's a placeholder and does not perform any conversion
-
+   convertForCharts(userStats, chartType = null) {
       const calcPercentage = (obj) => {
          const total = obj.correct + obj.incorrect;
          if (total === 0) return 0;
          return Math.round((obj.correct / total) * 100);
       };
-      let chartData = [];
-      const typeData = userStats[chartType]; // e.g., levels or operations
-      for (const key in typeData) {
-         if (typeData.hasOwnProperty(key)) {
-            chartData.push({ label: key, value: calcPercentage(typeData[key]) });
-         }
-      }
-      // console.log("Converted chart data:", chartData);
-      // If chartType is operations, convert labels
-      chartData = chartType === "operations" ? this.convertOperationsLabels(chartData) : chartData;
 
-      return chartData;
+      const convertTypeData = (typeData, type) => {
+         const chartData = [];
+         for (const key in typeData) {
+            if (typeData.hasOwnProperty(key)) {
+               chartData.push({ label: key, value: calcPercentage(typeData[key]) });
+            }
+         }
+         return type === "operations" ? this.convertOperationsLabels(chartData) : chartData;
+      };
+
+      // If specific chartType is requested, return only that data (backward compatibility)
+      if (chartType) {
+         return convertTypeData(userStats[chartType], chartType);
+      }
+
+      // Return both datasets
+      return {
+         levels: convertTypeData(userStats.levels, "levels"),
+         operations: convertTypeData(userStats.operations, "operations"),
+      };
    },
 
    convertOperationsLabels(data) {
@@ -71,6 +76,7 @@ export class HorizontalBarChart {
    }
 
    render() {
+      // console.log("Rendering HorizontalBarChart with data:", this.data);
       const width = this.el.clientWidth || 600;
       const { leftAxisWidth, rightPadding, topPadding, bottomPadding, barHeight, barGap, tickCount } = this.options;
       const rows = this.data.length;
@@ -170,5 +176,12 @@ export class HorizontalBarChart {
    updateData(newData) {
       this.data = newData;
       this.render();
+   }
+
+   destroy() {
+      if (this.resizeObserver) {
+         this.resizeObserver.disconnect();
+         this.resizeObserver = null;
+      }
    }
 }

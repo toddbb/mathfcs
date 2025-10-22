@@ -21,7 +21,7 @@ export const Debug = {
          right: "10px",
          cursor: "pointer",
          zIndex: "9999",
-         fontSize: "1.5vw",
+         fontSize: "clamp(0.75rem, 1.5vw, 1.75rem)",
          userSelect: "none",
       });
 

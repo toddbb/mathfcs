@@ -57,9 +57,9 @@
                </svg>
             </div>
 
-            <!-- <img class="icon-home cursor-pointer" src="./assets/icons/home.svg" alt="Home" /> -->
-
-            <div class="level-display nodisplay">Cấp Độ <span class="level-display-value">0</span></div>
+            <div class="level-display nodisplay">
+               <h2>Cấp Độ <span class="level-display-value">0</span></h2>
+            </div>
             <div class="header-info flex flex-row gap-4 items-center">
                <div class="points-container flex flex-row items-center gap-2">
                   <svg class="my-icons icon-star" width="24" height="24" aria-hidden="true">
@@ -67,7 +67,6 @@
                   </svg>
                   <span class="score-display">0</span>
                </div>
-               <!-- <img class="btnSummary cursor-pointer text-2xl" src="./assets/icons/bar-chart-2.svg" alt="Stats" /> -->
 
                <svg class="my-icons icon-btn btnSummary" width="24" height="24" aria-hidden="true">
                   <use href="#icon-bar-chart"></use>
@@ -75,15 +74,15 @@
             </div>
          </div>
       </header>
-      <main class="flex flex-row justify-center w-full h-full">
+      <main class="flex flex-row justify-center w-full">
          <div class="container flex flex-col h-full items-center">
             <!-- View: Home -->
             <div class="view view-home flex flex-col items-center justify-evenly gap-8 h-full py-8">
-               <h1 class="mb-8">Bài Kiểm Tra Toán</h1>
+               <h1 class="mb-8 text-center">Bài Kiểm Tra Toán</h1>
                <p>Chọn Mức Độ Khó</p>
                <div class="difficult-levels grid grid-rows-2 grid-cols-2 gap-6 w-full">
                   <div class="btn-difficulty btn-easy flex flex-col justify-center items-center gap-1 p-3" data-difficulty="1">
-                     <h4 class="level">Cấp Độ 1</h4>
+                     <h3 class="level">Cấp Độ 1</h3>
                      <p class="description">Dễ</p>
                   </div>
                   <div class="btn-difficulty btn-easy flex flex-col justify-center items-center gap-1 p-3" data-difficulty="2">
@@ -103,38 +102,36 @@
 
             <!-- View: Game -->
             <div class="view view-game flex flex-col items-center justify-evenly gap-3 py-4 w-full nodisplay">
-               <div class="question flex flex-col items-center justify-center w-full">12 + 23 =</div>
+               <div class="question flex flex-col items-center justify-center my-4 w-full">12 + 23 =</div>
                <div class="multiple-choice-container grid grid-rows-2 grid-cols-2 gap-4 w-full">
                   <div class="btn-choice grid" data-choice="0"></div>
                   <div class="btn-choice grid" data-choice="1"></div>
                   <div class="btn-choice grid" data-choice="2"></div>
                   <div class="btn-choice grid" data-choice="3"></div>
                </div>
+               <div class="success-animation nodisplay">
+                  <svg class="my-icons" width="24" height="24" aria-hidden="true">
+                     <use href="#icon-checkmark-thick"></use>
+                  </svg>
+               </div>
+               <div class="incorrect-animation nodisplay">
+                  <svg class="my-icons" width="24" height="24" aria-hidden="true">
+                     <use href="#icon-x-thick"></use>
+                  </svg>
+               </div>
             </div>
          </div>
       </main>
 
       <!-- Success Overlay -->
-      <div class="success-overlay nodisplay">
-         <div class="success-animation">
-            <svg class="my-icons" width="24" height="24" aria-hidden="true">
-               <use href="#icon-checkmark-thick"></use>
-            </svg>
-         </div>
-      </div>
+      <div class="success-overlay nodisplay"></div>
 
       <!-- Incorrect Overlay -->
-      <div class="incorrect-overlay nodisplay">
-         <div class="incorrect-animation">
-            <svg class="my-icons" width="24" height="24" aria-hidden="true">
-               <use href="#icon-x-thick"></use>
-            </svg>
-         </div>
-      </div>
+      <div class="incorrect-overlay nodisplay"></div>
 
       <!-- Modal: Summary -->
       <div class="modal modal-summary flex w-full h-full nodisplay">
-         <div class="modal-wrapper container grid gap-8 w-full h-full">
+         <div class="modal-wrapper container grid gap-2 w-full h-full">
             <!-- Zero Row: Header and Close -->
             <div class="modal-header flex flex-row items-center justify-between w-full">
                <h2 class="modal-title text-2xl">Thống Kê</h2>
@@ -145,7 +142,7 @@
                </div>
             </div>
             <!-- First Row: Main Stats -->
-            <div class="stats-main flex flex-row items-center justify-between w-full gap-3 px-10">
+            <div class="stats-main flex flex-row items-center justify-between w-full gap-4 px-10">
                <div class="stats-main-stat flex flex-col items-center justify-center gap-1">
                   <span class="stats-main-stat-value total-questions" data-stat="attempts">0</span>
                   <span class="stats-main-stat-label text-center text-sm">Total Attempts</span>
@@ -171,12 +168,7 @@
                   <div class="chart-btn btn-by-level flex items-center justify-center text-sm cursor-pointer active" data-chart="levels">Level</div>
                   <div class="chart-btn btn-by-operation flex items-center justify-center cursor-pointer text-sm" data-chart="operations">Operation</div>
                </div>
-               <div class="chart-container flex flex-col items-center justify-center gap-2 w-full" data-chart-type="level">
-                  <h4 class="chart-title">By Level</h4>
-               </div>
-               <div class="chart-container flex flex-col items-center justify-center gap-2 w-full nodisplay" data-chart-type="operation">
-                  <h4 class="chart-title">By Operation</h4>
-               </div>
+               <div class="chart-container flex flex-col items-center justify-center gap-2 w-full"></div>
             </div>
          </div>
       </div>

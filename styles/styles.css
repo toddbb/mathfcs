@@ -2,7 +2,7 @@
 
 
 :root {
-   --header-background: #a000a0;
+   --header-background: #6a0b6a;
    --header-height: 60px;
    --container-max-width: 1000px;
 }
@@ -17,6 +17,7 @@
 body {
    min-width: 320px;
 }
+
 
 
 /************************    ICONS     *******************/
@@ -50,8 +51,11 @@ body {
 /***********             CUSTOM CLASSES                 ********************/
 /***************************************************************************/
 body {
-   height: 100svh;
-   overflow: hidden;
+   height: 100dvh;
+}
+
+main {
+   min-height: calc(100dvh - var(--header-height));
 }
 
 /************* HEADER ***************************/
@@ -62,7 +66,8 @@ header {
    box-shadow: var(--shadow);
 }
 
-header * {
+header svg,
+.score-display {
    color: var(--gray-50);
 }
 
@@ -93,15 +98,21 @@ header .my-icons:hover {
    text-align: left;
 }
 
+/* responsive */
+header h2 {
+   font-size: 1.25rem;    /* fallback */
+   font-size: clamp(1.25rem, 3vw, 1.75rem);
+}
 
 /************* VIEW: HOME ***************************/
 
 
-
 .btn-difficulty {
-   height: 90px;   
+   min-height: 90px;   
    width: 130px;
-   width: clamp(130px, 20vw, 200px);
+   width: clamp(130px, 35vw, 250px);
+   justify-self: center;
+   align-self: center;
    font-size: 0.8rem;
    border-radius: 22px;
    cursor: pointer;
@@ -129,9 +140,31 @@ header .my-icons:hover {
 }
 
 
+/* responsive */
+.view-home h1 {
+   font-size: 2.5rem;    /* fallback */
+   font-size: clamp(2.5rem, 6vw, 4rem);
+}
+.view-home > p {   
+    font-size: 1rem;
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+}
+
+.btn-difficulty h3 {
+    font-size: 1.25rem;
+    font-size: clamp(1.25rem, 2.75vw, 1.8rem);
+}
+
+.btn-difficulty p {
+    font-size: 1rem;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+   }
+
+
 /************* VIEW: GAME  ***************************/
 .view-game {   
-   max-width: 400px;
+   position: relative;   /* for success-animation positioning */
+   max-width: 440px;
    min-width: 280px;
 }
 
@@ -181,10 +214,14 @@ header .my-icons:hover {
 }
 
 .success-animation,
-.incorrect-animation {
+.incorrect-animation {    
+   position: absolute;
+   top: 50%;
+   left: 50%;
    width: 200px;
    height: 200px;
-   transform: scale(0);
+   transform: translate(-50%, -50%) scale(0);
+   z-index: 2000;
 }
 
 .success-animation svg,
@@ -196,79 +233,69 @@ header .my-icons:hover {
 
 /************* SUCCESS OVERLAY ***************************/
 .success-animation {
-   animation: thumbsUpAnimation 750ms ease-out forwards;
+   animation: feedbackAnimation 750ms ease-out forwards;
 }
 
 .success-animation svg {
-   color: limegreen !important;
+   color: #3af63a !important;
 }
-
-
-@keyframes thumbsUpAnimation {
-   0% {
-      transform: scale(0) rotate(-45deg);
-      opacity: 0;
-   }
-   30% {
-      transform: scale(1.2) rotate(10deg);
-      opacity: 1;
-   }
-   60% {
-      transform: scale(1) rotate(0deg);
-      opacity: 1;
-   }
-   100% {
-      transform: scale(1) rotate(0deg);
-      opacity: 0;
-   }
-}
-
 
 /************* INCORRECT OVERLAY ***************************/
-
 .incorrect-animation {
-   animation: thumbsDownAnimation 1500ms ease-out forwards;
+   animation: feedbackAnimation 1500ms ease-out forwards;
 }
+
 
 .incorrect-animation svg {
-   color: rgb(209, 52, 43) !important;
+   color: rgb(236, 42, 32) !important;
 }
 
-@keyframes thumbsDownAnimation {
+
+
+
+/************* KEYFRAMES: Success / Incorrect ***************************/
+@keyframes feedbackAnimation {
    0% {
-      transform: scale(0) rotate(-45deg);
+      transform: translate(-50%, -50%) scale(0) rotate(-45deg);
       opacity: 0;
    }
    30% {
-      transform: scale(1.2) rotate(10deg);
+      transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
       opacity: 1;
    }
    60% {
-      transform: scale(1) rotate(0deg);
+      transform: translate(-50%, -50%) scale(1) rotate(0deg);
       opacity: 1;
    }
    100% {
-      transform: scale(1) rotate(0deg);
+      transform: translate(-50%, -50%) scale(1) rotate(0deg);
       opacity: 0;
    }
 }
+
+
 
 
 /************************    MODAL: SUMMARY     *******************/
 .modal-summary {
-   height: 100%;
-   position: absolute;
+   min-height: 100dvh;
+   position: fixed;
    top: 0;
    left: 0;
    background-color: var(--gray-50);   
-    padding: min(2rem, 3vw);
+   padding: min(2rem, 3vw);
+   overflow-y: auto;
 }
 
 .modal-summary > .container {
    position: relative;
    max-width: 720px;
    padding: 0;      /* padding on the parent modal */
-   grid-template-rows: 60px minmax(100px, 1fr) 4fr;
+   grid-template-rows: 60px minmax(100px, auto) auto;
+}
+
+.modal-wrapper > :last-child {
+   padding-bottom: 2rem;
 }
 
 .modal-close,
@@ -287,13 +314,14 @@ header .my-icons:hover {
 .stats-main-stat-value {
    font-weight: 500;  
    font-size: var(--font-size-2xl);
-   font-size: clamp(1.25rem, 3vw, 2.25rem);
+   font-size: clamp(1.25rem, 5vw, 2.25rem);
 }
 
 
 .stats-main-stat-label {
    font-size: var(--font-size-2xl);
-   font-size: clamp(0.85rem, 1.5vw, 1.5rem);
+   font-size: clamp(0.85rem, 1.4vw, 1.4rem);
+   line-height: 1.25;
 }
 
 
