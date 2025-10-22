@@ -11,7 +11,7 @@ const Dom = {
       this.Views.game = document.querySelector(".view-game");
 
       /// Header Elements
-      this.iconHome = document.querySelector(".icon-home");
+      this.iconHome = document.querySelector(".btnHome");
       this.levelDisplay = document.querySelector(".level-display");
       this.levelDisplayValue = document.querySelector(".level-display-value");
       this.scoreDisplay = document.querySelector(".score-display");
@@ -24,7 +24,6 @@ const Dom = {
       this.scoreDisplay = document.querySelector(".score-display");
       this.successOverlay = document.querySelector(".success-overlay");
       this.incorrectOverlay = document.querySelector(".incorrect-overlay");
-
 
       /// Summary Model and Elements
       this.modalSummary = document.querySelector(".modal-summary");

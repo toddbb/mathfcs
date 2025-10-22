@@ -9,30 +9,69 @@
       <link rel="stylesheet" href="./styles/styles.css" />
    </head>
    <body>
-      <header class="flex flex-row w-full justify-center align-center">
-         <div class="container flex flex-row justify-between py-4">
-            <!-- <svg class="svg icon-home" width="24" height="24" aria-hidden="true">
-               <use href="/assets/icons/icons.svg#icon-home"></use>
-            </svg>
+      <!-- SVG Sprites -->
+      <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+         <symbol id="icon-home" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+               <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </g>
+         </symbol>
+         <symbol id="icon-bar-chart" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <line x1="18" y1="20" x2="18" y2="10"></line>
+               <line x1="12" y1="20" x2="12" y2="4"></line>
+               <line x1="6" y1="20" x2="6" y2="14"></line>
+            </g>
+         </symbol>
+         <symbol id="icon-star" viewBox="0 0 24 24">
+            <g stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </g>
+         </symbol>
+         <symbol id="icon-close-circle" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <circle cx="12" cy="12" r="10"></circle>
+               <line x1="15" y1="9" x2="9" y2="15"></line>
+               <line x1="9" y1="9" x2="15" y2="15"></line>
+            </g>
+         </symbol>
+         <symbol id="icon-checkmark-thick" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+               <polyline points="20 6 9 17 4 12" />
+            </g>
+         </symbol>
+         <symbol id="icon-x-thick" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+               <line x1="18" y1="6" x2="6" y2="18" />
+               <line x1="6" y1="6" x2="18" y2="18" />
+            </g>
+         </symbol>
+      </svg>
 
-            <style>
-               .icon-home {
-                  width: 24px;
-                  height: 24px;
-                  color: #334474; /* enables stroke='currentColor' to be visible */
-                  display: inline-block;
-               }
-            </style> -->
+      <header class="flex flex-row w-full justify-center items-center">
+         <div class="container flex flex-row justify-between items-center py-4">
+            <div class="flex items-center" style="width: 24px; height: 24px">
+               <svg class="my-icons icon-btn btnHome" width="24" height="24" aria-hidden="true">
+                  <use href="#icon-home"></use>
+               </svg>
+            </div>
 
-            <img class="icon-home cursor-pointer" src="./assets/icons/home.svg" alt="Home" />
+            <!-- <img class="icon-home cursor-pointer" src="./assets/icons/home.svg" alt="Home" /> -->
 
             <div class="level-display nodisplay">Cấp Độ <span class="level-display-value">0</span></div>
             <div class="header-info flex flex-row gap-4 items-center">
                <div class="points-container flex flex-row items-center gap-2">
-                  <span>⭐</span>
+                  <svg class="my-icons icon-star" width="24" height="24" aria-hidden="true">
+                     <use href="#icon-star"></use>
+                  </svg>
                   <span class="score-display">0</span>
                </div>
-               <img class="btnSummary cursor-pointer text-2xl" src="./assets/icons/bar-chart-2.svg" alt="Stats" />
+               <!-- <img class="btnSummary cursor-pointer text-2xl" src="./assets/icons/bar-chart-2.svg" alt="Stats" /> -->
+
+               <svg class="my-icons icon-btn btnSummary" width="24" height="24" aria-hidden="true">
+                  <use href="#icon-bar-chart"></use>
+               </svg>
             </div>
          </div>
       </header>
@@ -41,7 +80,7 @@
             <!-- View: Home -->
             <div class="view view-home flex flex-col items-center justify-evenly gap-8 h-full py-8">
                <h1 class="mb-8">Bài Kiểm Tra Toán</h1>
-               <p>Chọn mức độ khó:</p>
+               <p>Chọn Mức Độ Khó</p>
                <div class="difficult-levels grid grid-rows-2 grid-cols-2 gap-6 w-full">
                   <div class="btn-difficulty btn-easy flex flex-col justify-center items-center gap-1 p-3" data-difficulty="1">
                      <h4 class="level">Cấp Độ 1</h4>
@@ -77,12 +116,20 @@
 
       <!-- Success Overlay -->
       <div class="success-overlay nodisplay">
-         <div class="success-animation">✅</div>
+         <div class="success-animation">
+            <svg class="my-icons" width="24" height="24" aria-hidden="true">
+               <use href="#icon-checkmark-thick"></use>
+            </svg>
+         </div>
       </div>
 
       <!-- Incorrect Overlay -->
       <div class="incorrect-overlay nodisplay">
-         <div class="incorrect-animation">❌</div>
+         <div class="incorrect-animation">
+            <svg class="my-icons" width="24" height="24" aria-hidden="true">
+               <use href="#icon-x-thick"></use>
+            </svg>
+         </div>
       </div>
 
       <!-- Modal: Summary -->
@@ -90,27 +137,29 @@
          <div class="modal-wrapper container grid gap-8 w-full h-full">
             <!-- Zero Row: Header and Close -->
             <div class="modal-header flex flex-row items-center justify-between w-full">
-               <h2 class="modal-title text-xl">Statistics</h2>
+               <h2 class="modal-title text-2xl">Thống Kê</h2>
                <div class="modal-close flex items-center justify-center text-center icon cursor-pointer">
-                  <img src="./assets/icons/x-circle.svg" alt="Close" />
+                  <svg class="my-icons icon-btn" width="24" height="24" aria-hidden="true">
+                     <use href="#icon-close-circle"></use>
+                  </svg>
                </div>
             </div>
             <!-- First Row: Main Stats -->
             <div class="stats-main flex flex-row items-center justify-between w-full gap-3 px-10">
                <div class="stats-main-stat flex flex-col items-center justify-center gap-1">
-                  <span class="stats-main-stat-value total-questions text-xl" data-stat="attempts">0</span>
+                  <span class="stats-main-stat-value total-questions" data-stat="attempts">0</span>
                   <span class="stats-main-stat-label text-center text-sm">Total Attempts</span>
                </div>
                <div class="stats-main-stat flex flex-col items-center justify-center gap-1">
-                  <span class="stats-main-stat-value correct-answers text-xl" data-stat="correct">0</span>
+                  <span class="stats-main-stat-value correct-answers" data-stat="correct">0</span>
                   <span class="stats-main-stat-label text-center text-sm">Correct Answers</span>
                </div>
                <div class="stats-main-stat flex flex-col items-center justify-center gap-1">
-                  <span class="stats-main-stat-value incorrect-answers text-xl" data-stat="streak">0</span>
+                  <span class="stats-main-stat-value incorrect-answers" data-stat="streak">0</span>
                   <span class="stats-main-stat-label text-center text-sm">Current Streak</span>
                </div>
                <div class="stats-main-stat flex flex-col items-center justify-center gap-1">
-                  <span class="stats-main-stat-value longest-streak text-xl" data-stat="longest">0</span>
+                  <span class="stats-main-stat-value longest-streak" data-stat="longest">0</span>
                   <span class="stats-main-stat-label text-center text-sm">Longest Streak</span>
                </div>
             </div>

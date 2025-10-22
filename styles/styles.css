@@ -1,25 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
 
 :root {
+   --header-background: #a000a0;
    --header-height: 60px;
    --container-max-width: 1000px;
 }
 
-.icon {
-   cursor: pointer;
-   touch-action: manipulation;
-}
 
 
 * {
    user-select: none;
 }
 
-.svg {
-  fill: none;
-  stroke: #334474; /* or currentColor if you want it to inherit text color */
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+
+body {
+   min-width: 320px;
+}
+
+
+/************************    ICONS     *******************/
+.my-icons {
+   width: 24px;
+   height: 24px;
+   color: var(--gray-600);
+   fill: none;
+   stroke-width: 2px;
+   display: inline-block;   
+}
+
+.icon-btn {
+   cursor: pointer;
+   touch-action: manipulation;
+}
+
+.icon-btn:hover {
+   color: var(--gray-500);
+}
+
+.icon-star,
+.icon-star * {   
+    fill: #ffff4c !important;
+    color: #ecec8a  !important;
 }
 
 
@@ -36,8 +58,20 @@ body {
 
 header {
    height: var(--header-height);
-   background-color: var(--gray-100);
+   background-color: var(--header-background);
    box-shadow: var(--shadow);
+}
+
+header * {
+   color: var(--gray-50);
+}
+
+header .my-icons {
+   color: var(--gray-50);
+}
+
+header .my-icons:hover {
+   color: var(--gray-200);
 }
 
 .level-display {
@@ -46,8 +80,7 @@ header {
     top: 30px;
     left: 50%;
     font-size: 1.5rem;
-    color: #2a64a2;
-    font-family: monospace;
+    color: var(--gray-50)
 }
 
 .points-container {
@@ -61,17 +94,18 @@ header {
 }
 
 
-/************* VIEW: START  ***************************/
+/************* VIEW: HOME ***************************/
 
 
 
 .btn-difficulty {
-   height: 80px;
-   width: 120px;
+   height: 90px;   
+   width: 130px;
+   width: clamp(130px, 20vw, 200px);
    font-size: 0.8rem;
-   border-radius: 6px;
+   border-radius: 22px;
    cursor: pointer;
-   color:#f6f6f6
+   color: #f6f6f6;
 }
 
 .btn-difficulty:nth-child(1) {
@@ -130,8 +164,9 @@ header {
    background-color: rgb(236, 80, 71);
 }
 
-/************* SUCCESS OVERLAY ***************************/
-.success-overlay {
+/************* SUCCESS & INCORRECT OVERLAY ***************************/
+.success-overlay,
+.incorrect-overlay {
    position: fixed;
    top: 0;
    left: 0;
@@ -145,11 +180,29 @@ header {
    pointer-events: none;
 }
 
-.success-animation {
-   font-size: 8rem;
-   animation: thumbsUpAnimation 750ms ease-out forwards;
+.success-animation,
+.incorrect-animation {
+   width: 200px;
+   height: 200px;
    transform: scale(0);
 }
+
+.success-animation svg,
+.incorrect-animation svg {
+   position: relative;
+   width: 100%;
+   height: 100%;
+}
+
+/************* SUCCESS OVERLAY ***************************/
+.success-animation {
+   animation: thumbsUpAnimation 750ms ease-out forwards;
+}
+
+.success-animation svg {
+   color: limegreen !important;
+}
+
 
 @keyframes thumbsUpAnimation {
    0% {
@@ -172,24 +225,13 @@ header {
 
 
 /************* INCORRECT OVERLAY ***************************/
-.incorrect-overlay {
-   position: fixed;
-   top: 0;
-   left: 0;
-   width: 100vw;
-   height: 100vh;
-   background-color: rgba(0, 0, 0, 0.3);
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   z-index: 1000;
-   pointer-events: none;
-}
 
 .incorrect-animation {
-   font-size: 8rem;
    animation: thumbsDownAnimation 1500ms ease-out forwards;
-   transform: scale(0);
+}
+
+.incorrect-animation svg {
+   color: rgb(209, 52, 43) !important;
 }
 
 @keyframes thumbsDownAnimation {
@@ -214,11 +256,12 @@ header {
 
 /************************    MODAL: SUMMARY     *******************/
 .modal-summary {
+   height: 100%;
    position: absolute;
    top: 0;
    left: 0;
-   background-color: var(--gray-50);
-   padding: 10px;
+   background-color: var(--gray-50);   
+    padding: min(2rem, 3vw);
 }
 
 .modal-summary > .container {
@@ -228,9 +271,29 @@ header {
    grid-template-rows: 60px minmax(100px, 1fr) 4fr;
 }
 
+.modal-close,
+.modal-close svg {
+   height: 32px;
+   width: 32px;
+}
+
+
 
 .modal-close:hover {
    filter: brightness(0.9);
+}
+
+
+.stats-main-stat-value {
+   font-weight: 500;  
+   font-size: var(--font-size-2xl);
+   font-size: clamp(1.25rem, 3vw, 2.25rem);
+}
+
+
+.stats-main-stat-label {
+   font-size: var(--font-size-2xl);
+   font-size: clamp(0.85rem, 1.5vw, 1.5rem);
 }
 
 
@@ -311,4 +374,12 @@ header {
 }
 
 @media only screen and (max-width: 375px) {
+   .level-display {
+    position: static;
+    transform: none;
+    top: 0px;
+    left: 0px;
+    font-size: 1.5rem;
+    color: var(--gray-50);
+   }   
 }
