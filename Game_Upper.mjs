@@ -1,8 +1,8 @@
-import * as Utils from "../utilities/utils.mjs";
-import Dom from "./dom.mjs";
-import MathModule from "./maths.mjs";
-import Ui from "./ui.mjs";
-import User from "./user.mjs";
+import * as Utils from "./scripts/modules/utilities/utils.mjs";
+import Dom from "./scripts/modules/controllers/dom.mjs";
+import MathModule from "./scripts/modules/controllers/maths.mjs";
+import Ui from "./scripts/modules/controllers/ui.mjs";
+import User from "./scripts/modules/controllers/user.mjs";
 
 /**
  * METHOD: Game Module
@@ -16,18 +16,21 @@ const Game = {
    },
 
    checkAnswer(selectedChoice) {
+      let keyCorrectOrIncorrect = null;
       // Utils.log(`User selected choice: ${selectedChoice}`, Utils.ENUM.LOG.INFO);
       if (parseInt(selectedChoice) === this.state.questionData.correctAnswerIndex) {
          // Utils.log("User selected the correct answer!", Utils.ENUM.LOG.INFO);
+         User.user.score += 1;
          // Show success animation
-         User.updateAfterAnswer(true, this.state.questionData.operation, this.state.difficulty);
-         Ui.updateScoreDisplay();
+         Ui.updateScoreDisplay(User.user.score);
+         User.updateStats(true, this.state.questionData.operation, this.state.difficulty);
          Ui.showSuccessAnimation().then(() => {
             this.next();
          });
       } else {
          // Utils.log("User selected the wrong answer.", Utils.ENUM.LOG.INFO);
-         User.updateAfterAnswer(false, this.state.questionData.operation, this.state.difficulty);
+         User.updateStats(false, this.state.questionData.operation, this.state.difficulty);
+         // Show incorrect animation and do not proceed to next question
          Ui.showIncorrectAnimation().then(() => {});
       }
    },
@@ -46,8 +49,8 @@ const Game = {
 
    async next() {
       this.state.questionData = await MathModule.generateData(this.state.difficulty);
-      // Utils.log(`Next question generated: ${this.state.questionData.question}`, Utils.ENUM.LOG.INFO);
-      // Utils.log(`Choices: ${this.state.questionData.choices}`, Utils.ENUM.LOG.INFO);
+      Utils.log(`Next question generated: ${this.state.questionData.question}`, Utils.ENUM.LOG.INFO);
+      Utils.log(`Choices: ${this.state.questionData.choices}`, Utils.ENUM.LOG.INFO);
       this.insertQuestion(this.state.questionData.question);
       this.populateChoices(this.state.questionData.choices);
    },

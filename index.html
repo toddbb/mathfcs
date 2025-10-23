@@ -49,33 +49,35 @@
          </symbol>
       </svg>
 
-      <header class="flex flex-row w-full justify-center items-center">
-         <div class="container flex flex-row justify-between items-center py-4">
-            <div class="flex items-center" style="width: 24px; height: 24px">
-               <svg class="my-icons icon-btn btnHome" width="24" height="24" aria-hidden="true">
-                  <use href="#icon-home"></use>
-               </svg>
-            </div>
-
-            <div class="level-display nodisplay">
-               <h2>Cấp Độ <span class="level-display-value">0</span></h2>
-            </div>
-            <div class="header-info flex flex-row gap-4 items-center">
-               <div class="points-container flex flex-row items-center gap-2">
-                  <svg class="my-icons icon-star" width="24" height="24" aria-hidden="true">
-                     <use href="#icon-star"></use>
+      <header class="flex flex-col w-full justify-center items-center">
+         <div class="header-primary flex flex-row w-full justify-center items-center">
+            <div class="container flex flex-row justify-between items-center py-4">
+               <div class="flex items-center" style="width: 24px; height: 24px">
+                  <svg class="my-icons icon-btn btnHome" width="24" height="24" aria-hidden="true">
+                     <use href="#icon-home"></use>
                   </svg>
-                  <span class="score-display">0</span>
                </div>
-
-               <svg class="my-icons icon-btn btnSummary" width="24" height="24" aria-hidden="true">
-                  <use href="#icon-bar-chart"></use>
-               </svg>
+               <div class="header-info flex flex-row gap-4 items-center">
+                  <div class="points-container flex flex-row items-center gap-2">
+                     <svg class="my-icons icon-star" width="24" height="24" aria-hidden="true">
+                        <use href="#icon-star"></use>
+                     </svg>
+                     <span class="score-display">&nbsp;&nbsp;</span>
+                  </div>
+                  <svg class="my-icons icon-btn btnSummary" width="24" height="24" aria-hidden="true">
+                     <use href="#icon-bar-chart"></use>
+                  </svg>
+               </div>
+            </div>
+         </div>
+         <div class="header-secondary flex flex-row w-full justify-center items-center">
+            <div class="level-display flex items-center justify-center w-full py-2 nodisplay">
+               <h2>Cấp Độ <span class="level-display-value">0</span></h2>
             </div>
          </div>
       </header>
       <main class="flex flex-row justify-center w-full">
-         <div class="container flex flex-col h-full items-center">
+         <div class="container flex flex-col h-full items-center py-4">
             <!-- View: Home -->
             <div class="view view-home flex flex-col items-center justify-evenly gap-8 h-full py-8">
                <h1 class="mb-8 text-center">Bài Kiểm Tra Toán</h1>
@@ -102,6 +104,9 @@
 
             <!-- View: Game -->
             <div class="view view-game flex flex-col items-center justify-evenly gap-3 py-4 w-full nodisplay">
+               <div class="level-display flex items-center justify-center w-full py-2">
+                  <h2>Cấp Độ <span class="level-display-value">0</span></h2>
+               </div>
                <div class="question flex flex-col items-center justify-center my-4 w-full">12 + 23 =</div>
                <div class="multiple-choice-container grid grid-rows-2 grid-cols-2 gap-4 w-full">
                   <div class="btn-choice grid" data-choice="0"></div>

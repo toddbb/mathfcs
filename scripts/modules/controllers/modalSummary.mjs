@@ -1,5 +1,5 @@
 import { Charts, HorizontalBarChart } from "./charts.mjs";
-import Ui from "./ui.mjs";
+import Dom from "./dom.mjs";
 import User from "./user.mjs";
 
 const modalSummary = {
@@ -10,29 +10,6 @@ const modalSummary = {
       operations: null,
    },
    _eventsInitialized: false,
-
-   Dom: {
-      allStats: document.querySelectorAll(".stats-main-stat-value"),
-      chartSelector: document.querySelector(".chart-selector"),
-      allChartSelectors: document.querySelectorAll(".chart-btn"),
-      chartContainer: document.querySelector(".chart-container"),
-      btnClose: document.querySelector(".modal-close"),
-   },
-
-   Events: {
-      init() {
-         modalSummary.Dom.chartSelector.addEventListener("click", (e) => {
-            // console.log("Chart selector clicked:", e.target);
-            if (e.target.classList.contains("chart-btn")) {
-               modalSummary.handleChartSelectorClick(e.target);
-            }
-         });
-
-         modalSummary.Dom.btnClose.addEventListener("click", () => {
-            Ui.closeModal("summary");
-         });
-      },
-   },
 
    handleChartSelectorClick(target) {
       const selectedChart = target.dataset.chart;
@@ -82,7 +59,7 @@ const modalSummary = {
          chartDiv.style.height = "280px"; // Fixed height to prevent jumping
          chartDiv.style.overflow = "hidden"; // Prevent any layout spillover
          chartDiv.className = `chart-${chartType}`;
-         this.Dom.chartContainer.appendChild(chartDiv);
+         Dom.chartContainer.appendChild(chartDiv);
 
          // Create the chart
          const options = {
@@ -107,35 +84,16 @@ const modalSummary = {
    },
 
    updateChartSelectorUI() {
-      this.Dom.allChartSelectors.forEach((btn) => {
+      Dom.allChartSelectors.forEach((btn) => {
          btn.classList.toggle("active", btn.dataset.chart === this.chartType);
       });
-   },
-
-   init() {
-      // console.log("modalSummary.init() called");
-      // Only initialize events once
-      if (!this._eventsInitialized) {
-         // console.log("Initializing events for the first time");
-         this.Events.init();
-         this._eventsInitialized = true;
-      } else {
-         // console.log("Events already initialized, skipping");
-      }
-
-      // Set fixed height on chart container to prevent jumping
-      this.Dom.chartContainer.style.height = "300px";
-      this.Dom.chartContainer.style.position = "relative";
-      this.Dom.chartContainer.style.transition = "opacity 0.15s ease-in-out";
-
-      // Refresh the modal content
-      this.refresh();
    },
 
    refresh() {
       // console.log("modalSummary.refresh() called");
       // Get fresh user stats
       this.userStats = User.Stats.get();
+      console.log(this.userStats);
 
       // Only set default chart type if not already set
       if (!this.chartType) {
@@ -143,7 +101,7 @@ const modalSummary = {
       }
 
       // Update stats display
-      this.Dom.allStats.forEach((statElem) => {
+      Dom.allStats.forEach((statElem) => {
          const statKey = statElem.dataset.stat;
          statElem.textContent = this.userStats[statKey];
       });
@@ -162,8 +120,18 @@ const modalSummary = {
          }
          this.charts[type] = null;
       });
-      this.Dom.chartContainer.innerHTML = "";
+      Dom.chartContainer.innerHTML = "";
       this.chartData = null;
+   },
+
+   init() {
+      // Set fixed height on chart container to prevent jumping
+      Dom.chartContainer.style.height = "300px";
+      Dom.chartContainer.style.position = "relative";
+      Dom.chartContainer.style.transition = "opacity 0.15s ease-in-out";
+
+      // Refresh the modal content
+      this.refresh();
    },
 };
 

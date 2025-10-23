@@ -51,6 +51,7 @@ function handleRouteChange() {
  * @param {string} route - Route name (e.g., 'game', 'home')
  */
 export function navigate(route) {
+   console.log(`Programmatically navigating to route: ${route}`);
    window.location.hash = route;
 }
 

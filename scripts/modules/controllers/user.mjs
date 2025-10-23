@@ -7,9 +7,11 @@ import Ui from "./ui.mjs";
  * Handles user data and interactions
  */
 const User = {
-   user: {
-      name: null,
-      score: 0,
+   // default values when the app loads
+   userTemplate: {
+      name: "Guest",
+      avatarId: 0,
+      accuracy: "",
       streak: 0,
       longest: 0,
       levels: {
@@ -38,45 +40,61 @@ const User = {
       },
    },
 
+   state: {
+      currentUserId: -1,
+      user: null,
+   },
+
    // Create a debounced version of the save function
-   debouncedSet: null,
+   debouncedUpdateUser: null,
 
-   set() {
-      // Initialize the debounced function if it doesn't exist
-      if (!this.debouncedSet) {
-         this.debouncedSet = Utils.debounce(() => {
-            AppStorage().local.set("user_data", this.user);
-         }, 2000);
-      }
-      // Call the debounced function
-      this.debouncedSet();
-   },
+   /************** USER MANAGEMENT AND LOCAL STORAGE **************/
+   Storage: {
+      addUser(user) {
+         const users = User.Storage.getAllUsers();
+         users.push(user);
+         AppStorage().local.set("users", users);
+      },
 
-   reset() {
-      this.user = { name: "Guest", score: 0 };
-      this.set();
-      Ui.updateScoreDisplay(this.user.score);
-   },
+      updateUser(useDebounce = true) {
+         const allUsers = User.Storage.getAllUsers();
+         const currentUserId = User.state.currentUserId || User.Storage.getCurrentUserId();
 
-   updateStats(isCorrect = true, operation, level) {
-      if (isCorrect) {
-         this.user.levels[level].correct += 1;
-         this.user.operations[operation].correct += 1;
-         this.user.streak += 1;
-         if (this.user.streak > this.user.longest) {
-            this.user.longest = this.user.streak;
+         // Error checking: make sure there is a current user to update
+         const currentUserData = allUsers[currentUserId];
+         if (currentUserData) {
+            allUsers[currentUserId] = User.state.user;
+         } else {
+            console.error("No current user found to update.");
+            return;
          }
-      } else {
-         this.user.levels[level].incorrect += 1;
-         this.user.operations[operation].incorrect += 1;
-         this.user.streak = 0;
-      }
-      this.set();
+
+         // Initialize the debounced function if it doesn't exist
+         if (!User.debouncedUpdateUser && useDebounce) {
+            User.debouncedUpdateUser = Utils.debounce(() => {
+               AppStorage().local.set("users", allUsers);
+            }, 2000);
+         }
+
+         // Call the debounced function
+         User.debouncedUpdateUser();
+      },
+
+      // get the current user ID from storage
+      getCurrentUserId() {
+         return AppStorage().local.get("currentUserId");
+      },
+
+      // get all users from storage
+      getAllUsers() {
+         return AppStorage().local.get("users") || [];
+      },
    },
 
+   /******* Specific User Method "Stats" for calculating and getting user statistics *********/
    Stats: {
-      getTotals() {
-         const levels = User.user.levels;
+      _getTotals() {
+         const levels = User.state.user.levels;
          let attempts = 0;
          let correct = 0;
          let incorrect = 0;
@@ -87,38 +105,81 @@ const User = {
          }
          return { attempts, correct, incorrect };
       },
-      getAccuracy() {
+
+      _getAccuracy() {
          let accuracy = 0;
-         const totals = this.getTotals();
+         const totals = this._getTotals();
          if (totals.attempts === 0) return accuracy;
          accuracy = `${Math.round((totals.correct / totals.attempts) * 100)}%`;
          return { accuracy };
       },
 
-      getTotalCorrect() {
-         const levels = User.user.levels;
-         let total = 0;
+      _getScore() {
+         const score = this._getTotals().correct;
+         return { score };
       },
+
       get() {
-         return { ...User.user, ...this.getTotals(), ...this.getAccuracy() };
+         return { ...User.state.user, ...this._getAccuracy(), ...this._getScore(), ...this._getTotals() };
       },
    },
 
+   /************ OTHER FUNCTION **********************/
+
+   updateAfterAnswer(isCorrect = true, operation, level) {
+      //console.log(`Updating user stats after answer. Correct: ${isCorrect}, Operation: ${operation}, Level: ${level}`);
+      //console.log(User.state.user);
+      if (isCorrect) {
+         console.log("Answer was correct, updating stats accordingly.");
+         User.state.user.levels[level].correct += 1;
+         User.state.user.operations[operation].correct += 1;
+         User.state.user.streak += 1;
+         if (User.state.user.streak > User.state.user.longest) {
+            User.state.user.longest = User.state.user.streak;
+         }
+      } else {
+         //console.log("Answer was incorrect, updating stats accordingly.");
+         User.state.user.levels[level].incorrect += 1;
+         User.state.user.operations[operation].incorrect += 1;
+         User.state.user.streak = 0;
+      }
+      //console.log(User.state.user);
+      User.Storage.updateUser();
+   },
+
+   resetUser() {
+      User.state.user = User.userTemplate;
+      User.Storage.updateUser();
+      Ui.updateScoreDisplay();
+   },
+
+   /****************** INITIALIZATION *********************/
+
    init() {
       Utils.log("Initializing User Module", Utils.ENUM.LOG.INIT);
-      // Use AppStorage consistently instead of direct localStorage access
-      const userData = AppStorage().local.get("user_data");
-      // check if userData has all of the keys as this.user; if not, initialize missing keys, but don't remove existing data
-      if (userData) {
-         User.user = { ...User.user, ...userData }; // update missing keys
-         Utils.log("User data loaded from storage", "👤");
+      // first, try to get the current user ID from storage
+      const currentUserId = User.Storage.getCurrentUserId();
+
+      // if there is a current user ID, update state; otherwise, create one with ID = 0
+      if (currentUserId && currentUserId !== -1) {
+         User.state.currentUserId = currentUserId;
       } else {
-         Utils.log("No user data found, initializing new user.", "👤");
-         // User.user = { name: "Guest", score: 0};
-         // Save the new user data immediately (not debounced for initial setup)
-         User.set();
+         User.state.currentUserId = 0; // default to first user
+         AppStorage().local.set("currentUserId", User.state.currentUserId);
       }
-      Ui.updateScoreDisplay(User.user.score);
+
+      // next, get the user's data from the array of "users"
+      const storedUsers = User.Storage.getAllUsers();
+
+      // if there is an existing user, update state; otherwise, initialize a new user
+      if (storedUsers && storedUsers[User.state.currentUserId]) {
+         User.state.user = { ...User.state.user, ...storedUsers[User.state.currentUserId] }; // merge existing data and any extra keys from template
+      } else {
+         Utils.log("No existing user data found, initializing new user.", "👤");
+         // Save the default or current user data immediately (not debounced for initial setup)
+         User.Storage.addUser(User.userTemplate);
+         User.state.user = { ...User.userTemplate };
+      }
    },
 };
 

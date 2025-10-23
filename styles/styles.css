@@ -3,8 +3,11 @@
 
 :root {
    --header-background: #6a0b6a;
-   --header-height: 60px;
+   --header-height: 110px;
+   --header-primary-height: 70px;
+   --header-secondary-height: 40px;
    --container-max-width: 1000px;
+   --header-secondary-background: #cdcdcd;
 }
 
 
@@ -60,32 +63,29 @@ main {
 
 /************* HEADER ***************************/
 
-header {
-   height: var(--header-height);
+.header-primary {
+   height: var(--header-primary-height);
    background-color: var(--header-background);
    box-shadow: var(--shadow);
 }
 
-header svg,
+.header-secondary {
+   height: var(--header-secondary-height);
+   background-color: var(--header-secondary-background);
+   box-shadow: var(--shadow);
+}  
+
+.header-primary svg,
 .score-display {
    color: var(--gray-50);
 }
 
-header .my-icons {
+.header-primary .my-icons {
    color: var(--gray-50);
 }
 
-header .my-icons:hover {
+.header-primary .my-icons:hover {
    color: var(--gray-200);
-}
-
-.level-display {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 30px;
-    left: 50%;
-    font-size: 1.5rem;
-    color: var(--gray-50)
 }
 
 .points-container {
@@ -99,7 +99,7 @@ header .my-icons:hover {
 }
 
 /* responsive */
-header h2 {
+.header-primary h2 {
    font-size: 1.25rem;    /* fallback */
    font-size: clamp(1.25rem, 3vw, 1.75rem);
 }
@@ -168,6 +168,16 @@ header h2 {
    min-width: 280px;
 }
 
+
+
+.level-display {
+    background: #e2e2e2;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 1.5rem;
+}
+
+
 .question {
    height: 200px;
    border: 2px solid var(--gray-300);
@@ -196,6 +206,8 @@ header h2 {
 .btn-choice:nth-child(4) {
    background-color: rgb(236, 80, 71);
 }
+
+
 
 /************* SUCCESS & INCORRECT OVERLAY ***************************/
 .success-overlay,

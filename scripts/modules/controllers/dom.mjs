@@ -27,8 +27,13 @@ const Dom = {
       this.incorrectOverlay = document.querySelector(".incorrect-overlay");
       this.incorrectAnimation = document.querySelector(".incorrect-animation");
 
-      /// Summary Model and Elements
+      /// Modal: Summary Elements
       this.modalSummary = document.querySelector(".modal-summary");
+      this.allStats = document.querySelectorAll(".stats-main-stat-value");
+      this.chartSelector = document.querySelector(".chart-selector");
+      this.allChartSelectors = document.querySelectorAll(".chart-btn");
+      this.chartContainer = document.querySelector(".chart-container");
+      this.btnClose = document.querySelector(".modal-close");
    },
 };
 

@@ -1,7 +1,7 @@
 import { Config } from "./modules/config/config.mjs";
 import Dom from "./modules/controllers/dom.mjs";
 import Events from "./modules/controllers/events.mjs";
-import Game from "./modules/controllers/Game.mjs";
+import Game from "./modules/controllers/game.mjs";
 import MathModule from "./modules/controllers/maths.mjs";
 import modalSummary from "./modules/controllers/modalSummary.mjs";
 import Ui from "./modules/controllers/ui.mjs";
@@ -20,8 +20,8 @@ const initAfterDOM = () => {
 
    Dom.init();
    Events.init();
-   Ui.init();
    User.init();
+   Ui.init();
 
    // Initialize router after DOM elements are available
    initRouter({

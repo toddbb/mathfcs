@@ -1,8 +1,9 @@
 import { navigate } from "../services/routing.mjs";
 import * as Utils from "../utilities/utils.mjs";
 import Dom from "./dom.mjs";
-import Game from "./Game.mjs";
+import Game from "./game.mjs";
 import modalSummary from "./modalSummary.mjs";
+import User from "./user.mjs";
 
 /**
  * METHOD: UI Module
@@ -11,14 +12,6 @@ import modalSummary from "./modalSummary.mjs";
 const Ui = {
    // Track currently open modal
    currentModal: null,
-
-   // Initialize UI event listeners
-   init() {
-      // Listen for browser back button
-      window.addEventListener("popstate", (e) => {
-         this.handleBackButton(e);
-      });
-   },
 
    // Handle browser back button
    handleBackButton(e) {
@@ -64,7 +57,7 @@ const Ui = {
 
    showView(viewName) {
       // Prevent access to game if the game is not running
-      if (!Game.isRunning && viewName === "game") {
+      if (!Game.state.isRunning && viewName === "game") {
          window.location.hash = "home";
          return Promise.resolve(false);
       }
@@ -81,15 +74,15 @@ const Ui = {
    /// Header Info
    showLevelDisplay(isShow) {
       if (isShow) {
-         Dom.levelDisplayValue.textContent = `${Game.difficulty}`;
+         Dom.levelDisplayValue.textContent = `${Game.state.difficulty}`;
          Utils.show(Dom.levelDisplay);
       } else {
          Utils.hide(Dom.levelDisplay);
       }
    },
 
-   updateScoreDisplay(newScore) {
-      Dom.scoreDisplay.textContent = newScore;
+   updateScoreDisplay() {
+      Dom.scoreDisplay.textContent = User.Stats.get().score;
    },
 
    /// Overlay Management
@@ -182,6 +175,12 @@ const Ui = {
          Dom.Views.home.style.pointerEvents = ""; // Enable clicking
          Dom.Views.game.style.pointerEvents = ""; // Enable clicking
       }
+   },
+
+   // Initialize UI event listeners
+   init() {
+      Utils.log("Initializing UI Module", Utils.ENUM.LOG.INIT);
+      this.updateScoreDisplay(User.state.user?.score || 0);
    },
 };
 
