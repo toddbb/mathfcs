@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Chart Scaling Test</title>
+      <style>
+         body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+         }
+         .chart-container {
+            margin: 20px 0;
+            border: 1px solid #ccc;
+            padding: 10px;
+         }
+         h3 {
+            margin-top: 30px;
+         }
+      </style>
+   </head>
+   <body>
+      <h1>Chart X-Axis Scaling Test</h1>
+
+      <h3>Percentage Data (0-100% scale)</h3>
+      <div id="chart-percentage" class="chart-container"></div>
+
+      <h3>Small Integer Data (should scale to 10 minimum)</h3>
+      <div id="chart-small" class="chart-container"></div>
+
+      <h3>Medium Integer Data (should scale to nice round number)</h3>
+      <div id="chart-medium" class="chart-container"></div>
+
+      <h3>Large Integer Data (should scale to hundreds)</h3>
+      <div id="chart-large" class="chart-container"></div>
+
+      <script type="module">
+         import { HorizontalBarChart } from "./scripts/modules/controllers/charts.mjs";
+
+         // Test data for percentage chart
+         const percentageData = [
+            { label: "Level 1", value: 35 },
+            { label: "Level 2", value: 62 },
+            { label: "Level 3", value: 78 },
+            { label: "Level 4", value: 54 },
+         ];
+
+         // Small values (should scale to 10)
+         const smallData = [
+            { label: "Easy", value: 3 },
+            { label: "Medium", value: 7 },
+            { label: "Hard", value: 5 },
+         ];
+
+         // Medium values (should scale to 50 or 100)
+         const mediumData = [
+            { label: "Addition", value: 25 },
+            { label: "Subtraction", value: 18 },
+            { label: "Multiplication", value: 31 },
+            { label: "Division", value: 22 },
+         ];
+
+         // Large values (should scale to 200)
+         const largeData = [
+            { label: "Addition", value: 125 },
+            { label: "Subtraction", value: 89 },
+            { label: "Multiplication", value: 156 },
+            { label: "Division", value: 78 },
+         ];
+
+         // Create charts
+         new HorizontalBarChart(document.getElementById("chart-percentage"), percentageData, { showPercentage: true });
+         new HorizontalBarChart(document.getElementById("chart-small"), smallData, { showPercentage: false });
+         new HorizontalBarChart(document.getElementById("chart-medium"), mediumData, { showPercentage: false });
+         new HorizontalBarChart(document.getElementById("chart-large"), largeData, { showPercentage: false });
+      </script>
+   </body>
+</html>

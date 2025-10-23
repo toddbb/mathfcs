@@ -87,12 +87,20 @@ const User = {
          }
          return { attempts, correct, incorrect };
       },
+      getAccuracy() {
+         let accuracy = 0;
+         const totals = this.getTotals();
+         if (totals.attempts === 0) return accuracy;
+         accuracy = `${Math.round((totals.correct / totals.attempts) * 100)}%`;
+         return { accuracy };
+      },
+
       getTotalCorrect() {
          const levels = User.user.levels;
          let total = 0;
       },
       get() {
-         return { ...User.user, ...this.getTotals() };
+         return { ...User.user, ...this.getTotals(), ...this.getAccuracy() };
       },
    },
 

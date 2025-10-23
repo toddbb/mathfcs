@@ -372,7 +372,7 @@ header h2 {
    width: 100%;
 }
 .chart-container svg {
-   color: #37ce67; /* Theme color: change this to match your design */
+   color: var(--header-background) !important; /* Theme color: change this to match your design */
    font-family: system-ui, Arial, sans-serif;
 }
 

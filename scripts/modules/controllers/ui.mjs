@@ -2,12 +2,46 @@ import { navigate } from "../services/routing.mjs";
 import * as Utils from "../utilities/utils.mjs";
 import Dom from "./dom.mjs";
 import Game from "./Game.mjs";
+import modalSummary from "./modalSummary.mjs";
 
 /**
  * METHOD: UI Module
  * Handles UI interactions and updates
  */
 const Ui = {
+   // Track currently open modal
+   currentModal: null,
+
+   // Initialize UI event listeners
+   init() {
+      // Listen for browser back button
+      window.addEventListener("popstate", (e) => {
+         this.handleBackButton(e);
+      });
+   },
+
+   // Handle browser back button
+   handleBackButton(e) {
+      // Check if we're in a modal state
+      const state = e.state;
+      const isModalState = state && state.modal;
+
+      // If we have a modal open but the history state doesn't indicate a modal,
+      // it means the user pressed back to close the modal
+      if (this.currentModal && !isModalState) {
+         const modalToClose = this.currentModal;
+         this.closeModal(modalToClose);
+         return;
+      }
+
+      // If the state indicates a modal should be open but we don't have one open,
+      // open it (this handles forward navigation) - don't add to history since we're restoring
+      if (isModalState && !this.currentModal) {
+         this.showModal(state.modal, false);
+         return;
+      }
+   },
+
    /// Event handlers
    handleDifficultyLevelClick(e) {
       const selectedDifficulty = e.target.closest(".btn-difficulty").dataset.difficulty;
@@ -92,12 +126,28 @@ const Ui = {
    },
 
    /// Modal Management
-   showModal(modalName) {
+   showModal(modalName, addToHistory = true) {
+      // If already showing this modal, don't do anything
+      if (this.currentModal === modalName) return;
+
+      // Close any existing modal first
+      if (this.currentModal) {
+         this.closeModal(this.currentModal);
+      }
+
+      // Set current modal
+      this.currentModal = modalName;
+
+      // Add history state for back button handling (unless we're restoring from history)
+      if (addToHistory) {
+         history.pushState({ modal: modalName }, "", window.location.href);
+      }
+
       switch (modalName) {
          case "summary":
             Utils.show(Dom.modalSummary);
             // disable background scrolling, clicking, and focus
-            Ui.disableBackgroundInteraction(true);
+            this.disableBackgroundInteraction(true);
             break;
          default:
             Utils.log(`Unknown modal: ${modalName}`, Utils.ENUM.LOG.WARN);
@@ -105,14 +155,21 @@ const Ui = {
    },
 
    closeModal(modalName) {
+      // Only close if this is the currently open modal
+      if (this.currentModal !== modalName) return;
+
       switch (modalName) {
          case "summary":
             Utils.hide(Dom.modalSummary);
-            Ui.disableBackgroundInteraction(false);
+            modalSummary.cleanup(); // Clean up charts and event listeners
+            this.disableBackgroundInteraction(false);
             break;
          default:
             Utils.log(`Unknown modal: ${modalName}`, Utils.ENUM.LOG.WARN);
       }
+
+      // Clear current modal
+      this.currentModal = null;
    },
 
    disableBackgroundInteraction(disable = false) {

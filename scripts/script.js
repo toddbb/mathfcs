@@ -20,6 +20,7 @@ const initAfterDOM = () => {
 
    Dom.init();
    Events.init();
+   Ui.init();
    User.init();
 
    // Initialize router after DOM elements are available
