@@ -3,6 +3,7 @@ import * as Utils from "../utilities/utils.mjs";
 import Dom from "./dom.mjs";
 import Game from "./game.mjs";
 import modalSummary from "./modalSummary.mjs";
+import modalUser from "./modalUser.mjs";
 import User from "./user.mjs";
 
 /**
@@ -33,6 +34,31 @@ const Ui = {
          this.showModal(state.modal, false);
          return;
       }
+   },
+
+   // Handle summary button click to show summary modal
+   handleBtnSummaryClick() {
+      Ui.showModal("summary");
+      // Only init once, then refresh for subsequent opens
+      if (!modalSummary._eventsInitialized) {
+         modalSummary.init();
+      } else {
+         modalSummary.refresh();
+      }
+   },
+
+   // Handle user avatar click to change avatar
+   handleAvatarClick() {
+      Utils.log("User avatar clicked. Opening User Modal.", "👤");
+      Utils.show(Dom.modalUser);
+      Ui.showModal("user");
+   },
+
+   // Close Button (for modals)
+   handleBtnCloseClick(target) {
+      const divEl = target.closest(".modal-close");
+      const modalName = divEl.dataset.close;
+      this.closeModal(modalName);
    },
 
    /// Event handlers
@@ -138,13 +164,21 @@ const Ui = {
 
       switch (modalName) {
          case "summary":
+            Utils.removeClass(Dom.modalSummary, "modal-disable");
             Utils.show(Dom.modalSummary);
-            // disable background scrolling, clicking, and focus
-            this.disableBackgroundInteraction(true);
+            modalSummary.init();
+            break;
+         case "user":
+            Utils.removeClass(Dom.modalUser, "modal-disable");
+            Utils.show(Dom.modalUser);
+            modalUser.init();
             break;
          default:
             Utils.log(`Unknown modal: ${modalName}`, Utils.ENUM.LOG.WARN);
       }
+
+      this.disableBackgroundInteraction(true);
+      this.disableHeaderInteraction(true);
    },
 
    closeModal(modalName) {
@@ -155,14 +189,43 @@ const Ui = {
          case "summary":
             Utils.hide(Dom.modalSummary);
             modalSummary.cleanup(); // Clean up charts and event listeners
-            this.disableBackgroundInteraction(false);
+            Utils.addClass(Dom.modalSummary, "modal-disable");
+            break;
+         case "user":
+            Utils.hide(Dom.modalUser);
+            Utils.addClass(Dom.modalUser, "modal-disable");
             break;
          default:
             Utils.log(`Unknown modal: ${modalName}`, Utils.ENUM.LOG.WARN);
       }
 
+      this.disableBackgroundInteraction(false);
+      this.disableHeaderInteraction(false);
+
       // Clear current modal
       this.currentModal = null;
+   },
+
+   updateUserContainer() {
+      ///   Update user avatar and name in header
+      console.log("Updating user container in header:", User.state.user);
+      if (User.state.user) {
+         Dom.userName.textContent = User.state.user.name;
+         Dom.userAvatar.src = `assets/avatars/avatar-${User.state.user.avatarId}.jpg`;
+      } else {
+         Dom.userName.textContent = "Guest";
+         Dom.userAvatar.src = `assets/avatars/avatar-0.jpg`;
+      }
+   },
+
+   disableHeaderInteraction(disable = false) {
+      if (disable) {
+         Dom.header.style.pointerEvents = "none";
+         Utils.addClass(Dom.header, "hidden");
+      } else {
+         Dom.header.style.pointerEvents = "";
+         Utils.removeClass(Dom.header, "hidden");
+      }
    },
 
    disableBackgroundInteraction(disable = false) {
@@ -170,16 +233,21 @@ const Ui = {
          // document.body.style.overflow = "hidden"; // Disable scrolling
          Dom.Views.home.style.pointerEvents = "none"; // Disable clicking
          Dom.Views.game.style.pointerEvents = "none"; // Disable clicking
+         Utils.addClass(Dom.Views.home, "hidden");
+         Utils.addClass(Dom.Views.game, "hidden");
       } else {
          // document.body.style.overflow = ""; // Enable scrolling
          Dom.Views.home.style.pointerEvents = ""; // Enable clicking
          Dom.Views.game.style.pointerEvents = ""; // Enable clicking
+         Utils.removeClass(Dom.Views.home, "hidden");
+         Utils.removeClass(Dom.Views.game, "hidden");
       }
    },
 
    // Initialize UI event listeners
    init() {
       Utils.log("Initializing UI Module", Utils.ENUM.LOG.INIT);
+      this.updateUserContainer(User.state.user);
       this.updateScoreDisplay(User.state.user?.score || 0);
    },
 };

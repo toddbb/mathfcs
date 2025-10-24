@@ -4,6 +4,7 @@ import Events from "./modules/controllers/events.mjs";
 import Game from "./modules/controllers/game.mjs";
 import MathModule from "./modules/controllers/maths.mjs";
 import modalSummary from "./modules/controllers/modalSummary.mjs";
+import modalUser from "./modules/controllers/modalUser.mjs";
 import Ui from "./modules/controllers/ui.mjs";
 import User from "./modules/controllers/user.mjs";
 import { initRouter } from "./modules/services/routing.mjs";
@@ -31,6 +32,7 @@ const initAfterDOM = () => {
 
    /// FOR DEVELOPMENT OF MODAL ONLY -- simulate event triggered
    // Dom.btnSummary.click();
+   // Dom.userAvatar.click();
 
    if (Config.DEV_MODE) {
       import("./modules/utilities/debug.mjs").then(({ Debug }) => {
@@ -46,6 +48,7 @@ const initAfterDOM = () => {
          window.AppStorage = AppStorage;
          window.MathModule = MathModule;
          window.modalSummary = modalSummary;
+         window.modalUser = modalUser;
       });
    }
 };

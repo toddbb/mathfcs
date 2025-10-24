@@ -26,15 +26,14 @@ const Events = {
          navigate("home");
       });
 
+      // Header: User Avatar Click
+      Dom.userAvatar.addEventListener("click", () => {
+         Ui.handleAvatarClick();
+      });
+
       // Header: Summary Button Click
       Dom.btnSummary.addEventListener("click", () => {
-         Ui.showModal("summary");
-         // Only init once, then refresh for subsequent opens
-         if (!modalSummary._eventsInitialized) {
-            modalSummary.init();
-         } else {
-            modalSummary.refresh();
-         }
+         Ui.handleBtnSummaryClick();
       });
 
       // Home: Difficulty Level
@@ -52,7 +51,6 @@ const Events = {
          });
       });
 
-
       // Modal Summary: Chart Selector
       Dom.chartSelector.addEventListener("click", (e) => {
          // console.log("Chart selector clicked:", e.target);
@@ -61,8 +59,27 @@ const Events = {
          }
       });
 
-      Dom.btnClose.addEventListener("click", () => {
-         Ui.closeModal("summary");
+      // Modal User: Add User
+      Dom.userAddUser.addEventListener("click", () => {
+         modalUser.Handlers.handleUserAddClick();
+      });
+
+      // Modal User: Edit Save
+      Dom.userEditBtnSave.addEventListener("click", () => {
+         modalUser.Handlers.handleUserEditSave();
+      });
+
+      // Modal User: Edit Cancel
+      Dom.userEditBtnCancel.addEventListener("click", () => {
+         modalUser.Handlers.handleUserEditCancel();
+      });
+
+
+      // Modals: Close Buttons
+      Dom.btnClose.forEach((btn) => {
+         btn.addEventListener("click", (e) => {
+            Ui.handleBtnCloseClick(e.target);
+         });
       });
    },
 };

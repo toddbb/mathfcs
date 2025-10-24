@@ -62,7 +62,7 @@ export function isElement(el) {
  *
  * @param {string} type - The type of element to create (e.g., 'div', 'span', 'p').
  * @param {Object} options - Options to customize the element.
- * @param {[string]} [options.classes] - Array of classes to add to the element.
+ * @param {string || [string]} [options.classes] - Array or string (separated by spaces) of classes to add to the element.
  * @param {string} [options.id] - ID to assign to the element.
  * @param {HTMLElement} [options.parent] - The parent element to append/prepend the new element to.
  * @param {boolean} [options.prepend=false] - Whether to prepend the element instead of appending. Append by default.
@@ -74,9 +74,12 @@ export function isElement(el) {
 
 export function createElement(type, options = {}) {
    const element = document.createElement(type);
-
    // Add classes if provided
    if (options.classes) {
+      // if it's string, convert to array
+      if (typeof options.classes === "string") {
+         options.classes = options.classes.split(" ");
+      }
       element.classList.add(...options.classes);
    }
 

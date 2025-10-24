@@ -614,6 +614,14 @@ button {
 .opacity-75 { opacity: 0.75; }
 .opacity-100 { opacity: 1; }
 
+@media (min-width: 460px) {
+   
+   .xsm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+   .xsm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+   .xsm\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+
 /* Responsive Design */
 @media (min-width: 640px) {
    .sm\:block { display: block; }
@@ -623,6 +631,7 @@ button {
    
    .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
    .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+   .sm\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
    
    .sm\:text-sm { font-size: var(--font-size-sm); }
    .sm\:text-base { font-size: var(--font-size-base); }
@@ -642,7 +651,9 @@ button {
    .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
    .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
    .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-   
+   .md\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+   .md\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
    .md\:text-lg { font-size: var(--font-size-lg); }
    .md\:text-xl { font-size: var(--font-size-xl); }
    .md\:text-2xl { font-size: var(--font-size-2xl); }

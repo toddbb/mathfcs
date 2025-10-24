@@ -50,15 +50,15 @@ const User = {
 
    /************** USER MANAGEMENT AND LOCAL STORAGE **************/
    Storage: {
-      addUser(user) {
-         const users = User.Storage.getAllUsers();
+      async addUser(user) {
+         const users = await User.Storage.getAllUsers();
          users.push(user);
          AppStorage().local.set("users", users);
       },
 
-      updateUser(useDebounce = true) {
+      updateUser(useDebounce = true, userId = null) {
          const allUsers = User.Storage.getAllUsers();
-         const currentUserId = User.state.currentUserId || User.Storage.getCurrentUserId();
+         const currentUserId = userId || User.state.currentUserId || User.Storage.getCurrentUserId();
 
          // Error checking: make sure there is a current user to update
          const currentUserData = allUsers[currentUserId];
@@ -77,7 +77,11 @@ const User = {
          }
 
          // Call the debounced function
-         User.debouncedUpdateUser();
+         if (useDebounce) {
+            User.debouncedUpdateUser();
+         } else {
+            AppStorage().local.set("users", allUsers);
+         }
       },
 
       // get the current user ID from storage
@@ -151,6 +155,19 @@ const User = {
       User.state.user = User.userTemplate;
       User.Storage.updateUser();
       Ui.updateScoreDisplay();
+   },
+
+   changeUser(userId) {
+      Utils.log(`User Model: Changing current user to ID: ${userId}`, "👤");
+      User.state.currentUserId = userId;
+      AppStorage().local.set("currentUserId", userId);
+   },
+
+   updateUserStateAndStorage(userId, user) {
+      User.state.user = { ...User.state.user, ...user };
+      User.state.currentUserId = userId;
+      this.changeUser(User.state.currentUserId);
+      User.Storage.updateUser(false, userId);
    },
 
    /****************** INITIALIZATION *********************/

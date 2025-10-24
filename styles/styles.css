@@ -4,8 +4,7 @@
 :root {
    --header-background: #6a0b6a;
    --header-height: 110px;
-   --header-primary-height: 70px;
-   --header-secondary-height: 40px;
+   --header-height: 70px;
    --container-max-width: 1000px;
    --header-secondary-background: #cdcdcd;
 }
@@ -63,28 +62,21 @@ main {
 
 /************* HEADER ***************************/
 
-.header-primary {
-   height: var(--header-primary-height);
+header {
    background-color: var(--header-background);
-   box-shadow: var(--shadow);
 }
 
-.header-secondary {
-   height: var(--header-secondary-height);
-   background-color: var(--header-secondary-background);
-   box-shadow: var(--shadow);
-}  
-
-.header-primary svg,
-.score-display {
+header .my-icons,
+header p,
+header h1,
+header h2,
+header h3,
+header span,
+header svg {
    color: var(--gray-50);
 }
 
-.header-primary .my-icons {
-   color: var(--gray-50);
-}
-
-.header-primary .my-icons:hover {
+header .my-icons:hover {
    color: var(--gray-200);
 }
 
@@ -92,14 +84,20 @@ main {
    font-size: clamp(1rem, 2.5vw, 1.5rem);
 }
 
-
 .score-display {
    max-width: 60px;
    text-align: left;
 }
 
+.user-avatar {
+   width: 32px;
+   height: 32px;
+   border-radius: 50%;
+   object-fit: cover;
+}
+
 /* responsive */
-.header-primary h2 {
+header h2 {
    font-size: 1.25rem;    /* fallback */
    font-size: clamp(1.25rem, 3vw, 1.75rem);
 }
@@ -288,8 +286,9 @@ main {
 
 
 
-/************************    MODAL: SUMMARY     *******************/
-.modal-summary {
+/************************    MODAL: ALL MODALS     *******************/
+.modal-summary,
+.modal-user {
    min-height: 100dvh;
    position: fixed;
    top: 0;
@@ -305,6 +304,8 @@ main {
    padding: 0;      /* padding on the parent modal */
    grid-template-rows: 60px minmax(100px, auto) auto;
 }
+
+/************************    MODAL: SUMMARY     *******************/
 
 .modal-wrapper > :last-child {
    padding-bottom: 2rem;
@@ -335,9 +336,6 @@ main {
    font-size: clamp(0.85rem, 1.4vw, 1.4rem);
    line-height: 1.25;
 }
-
-
-
 
 
 /************************    CHARTS     *******************/
@@ -393,11 +391,105 @@ main {
 }
 
 
+/************************    MODAL: USER     *******************/
+.modal-user.darken {
+   background-color: var(--gray-400) !important;
+}
+
+.modal-user .modal-wrapper.disable-interaction {
+   pointer-events: none !important;
+   background-color: var(--gray-400) !important;
+   cursor: auto !important;
+}
+
+.modal-user .modal-wrapper.disable-interaction > .modal-wrapper {
+   pointer-events: none;
+   opacity: 0.1;
+}
+
+.user-select-avatar,
+.user-add-avatar {
+   width: min(120px, 22vw);
+   height: auto;
+   border-radius: 50%;
+   object-fit: cover;
+   border: 2px solid transparent;
+}
+
+.user-select-edit-button,
+.user-add-edit-button-dummy {
+   width: 80px;
+   height: 32px;
+}
+
+.user-select-edit-button {
+   font-size: 0.85rem;
+   padding: 4px 8px;
+   background-color: var(--gray-500);
+   color: var(--gray-50);
+}
+
+.user-select-edit-button:hover {
+   background-color: var(--gray-600);
+}
+
+.modal-user-edit {
+   position: absolute;
+   background-color: var(--white);
+   min-width: 300px;
+   width: 80vw;
+   min-width: 300px;
+   max-width: 600px;
+   border-radius: 8px;
+   box-shadow: 0 0 6px -4px #999;
+}
+
+.avatar-list {
+   place-items: center;
+}
+
+.user-edit-avatar-option {
+   width: min(60px, 16vw);
+   height: auto;
+   border-radius: 50%;
+   object-fit: cover;
+   border: 2px solid transparent;
+   margin: 8px;
+   cursor: pointer;
+   transition: box-shadow 200ms;
+}
+
+.user-edit-avatar-option:hover {
+    box-shadow: 0 0 1px 4px var(--gray-300);
+}
+
+.user-edit-avatar-option.selected {
+    box-shadow: 0 0 1px 4px var(--header-background);
+    border: none;
+}
+
+
 /***************************************************************************/
 /***********       CLASSES CASCADED LAST          *************************/
 /***************************************************************************/
+.always-hide {
+   visibility: hidden !important;
+   opacity: 0 !important;
+}
+
+.hide {
+   visibility: hidden !important;
+   opacity: 0 !important
+}
+
 .nodisplay {
    display: none !important;
+}
+
+.modal-disable {
+   pointer-events: none !important;
+   background-color: var(--gray-400) !important;
+   cursor: auto !important;
 }
 
 /***************************************************************************/

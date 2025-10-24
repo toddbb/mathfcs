@@ -50,7 +50,7 @@
       </svg>
 
       <header class="flex flex-col w-full justify-center items-center">
-         <div class="header-primary flex flex-row w-full justify-center items-center">
+         <div class="header flex flex-row w-full justify-center items-center">
             <div class="container flex flex-row justify-between items-center py-4">
                <div class="flex items-center" style="width: 24px; height: 24px">
                   <svg class="my-icons icon-btn btnHome" width="24" height="24" aria-hidden="true">
@@ -58,6 +58,10 @@
                   </svg>
                </div>
                <div class="header-info flex flex-row gap-4 items-center">
+                  <div class="user-container flex flex-row gap-2 items-center justify-start">
+                     <span class="user-name">Guest</span>
+                     <img class="user-avatar cursor-pointer" src="./assets/avatars/avatar-0.JPG" alt="" srcset="" />
+                  </div>
                   <div class="points-container flex flex-row items-center gap-2">
                      <svg class="my-icons icon-star" width="24" height="24" aria-hidden="true">
                         <use href="#icon-star"></use>
@@ -68,11 +72,6 @@
                      <use href="#icon-bar-chart"></use>
                   </svg>
                </div>
-            </div>
-         </div>
-         <div class="header-secondary flex flex-row w-full justify-center items-center">
-            <div class="level-display flex items-center justify-center w-full py-2 nodisplay">
-               <h2>Cấp Độ <span class="level-display-value">0</span></h2>
             </div>
          </div>
       </header>
@@ -140,7 +139,7 @@
             <!-- Zero Row: Header and Close -->
             <div class="modal-header flex flex-row items-center justify-between w-full">
                <h2 class="modal-title text-2xl">Thống Kê</h2>
-               <div class="modal-close flex items-center justify-center text-center icon cursor-pointer">
+               <div class="modal-close flex items-center justify-center text-center icon cursor-pointer" data-close="summary">
                   <svg class="my-icons icon-btn" width="24" height="24" aria-hidden="true">
                      <use href="#icon-close-circle"></use>
                   </svg>
@@ -175,6 +174,47 @@
                </div>
                <h3>Correct Answers</h3>
                <div class="chart-container flex flex-col items-center justify-center gap-2 w-full"></div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Modal: User Avatar Selection -->
+      <div class="modal modal-user flex flex-col items-center gap-4 p-4 w-full h-full nodisplay">
+         <div class="modal-wrapper container flex flex-col items-center gap-2 w-full h-full">
+            <!-- Zero Row: Header and Close -->
+            <div class="modal-header flex flex-row justify-between w-full mb-4">
+               <h2 class="modal-title text-2xl">Chọn Ảnh Đại Diện</h2>
+               <!-- <div class="modal-close flex items-center justify-center text-center icon cursor-pointer" data-close="user">
+                  <svg class="my-icons icon-btn" width="24" height="24" aria-hidden="true">
+                     <use href="#icon-close-circle"></use>
+                  </svg>
+               </div> -->
+            </div>
+            <!-- First Row: User Selection -->
+            <div class="modal-user-select flex flex-col items-center justify-start w-full">
+               <div class="user-select-container flex flex-row justify-center gap-4 p-4 w-full">
+                  <!-- <div class="user-option flex flex-col items-center gap-1 cursor-pointer" data-userId="0">
+                     <img class="user-avatar-option" src="./assets/avatars/avatar-0.JPG" alt="Avatar 0" />
+                     <span class="user-name-option">Guest</span>
+                     <button class="btn user-edit-option">Edit</button>
+                  </div> -->
+                  <div class="user-add flex flex-col items-center gap-1" data-userId="-1">
+                     <img class="user-add-avatar cursor-pointer" src="./assets/avatars/avatar-new-user.png" alt="Avatar 0" />
+                     <!--  <span class="user-add-name"></span>
+                     <div class="user-add-edit-button-dummy always-hide" hidden></div> -->
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- SubModal: Edit / Add User -->
+         <div class="modal-user-edit flex flex-col items-center justify-start nodisplay gap-2 p-6">
+            <h2 class="modal-title text-2xl">Chỉnh Sửa Người Dùng</h2>
+            <div class="avatar-list grid grid-cols-2 xsm:grid-cols-4 justify-center gap-4 p-4 w-full mb-6"></div>
+            <h2 class="modal-label-name text-2xl mb-3">Tên Người Dùng</h2>
+            <input type="text" class="user-name-edit mb-6" />
+            <div class="flex flex-row justify-content items-center gap-6 mb-6">
+               <button class="btn user-edit-save">Save</button>
+               <button class="btn user-edit-cancel">Cancel</button>
             </div>
          </div>
       </div>

@@ -23,3 +23,11 @@ export const Config = {
    APP_NAME_LOWERCASE: $AppName.toLowerCase(),
    SESSION_STORAGE_PREFIX: $AppName.toLowerCase(), // TO DO: Change this to a unique prefix for this app
 };
+
+
+export const Config_AvatarList = [
+   "avatar-0.JPG",
+   "avatar-1.JPG",
+   "avatar-2.JPG",
+   "avatar-3.JPG",
+]
