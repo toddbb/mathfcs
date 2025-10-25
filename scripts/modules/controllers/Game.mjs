@@ -5,7 +5,7 @@ import Ui from "./ui.mjs";
 import User from "./user.mjs";
 
 /**
- * METHOD: Game Module
+ * METHOD: game Module
  * Handles game logic and state
  */
 const Game = {
