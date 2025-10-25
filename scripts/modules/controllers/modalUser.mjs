@@ -191,7 +191,7 @@ const modalUser = {
             parent: containerDiv,
             classes: "user-select-avatar",
             attributes: {
-               src: `./assets/avatars/avatar-${avatarId}.JPG`,
+               src: `./assets/avatars/avatar-${avatarId}.jpg`,
                "data-avatarid": avatarId,
                alt: `Avatar ${avatarId}`,
             },

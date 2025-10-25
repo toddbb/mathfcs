@@ -26,8 +26,8 @@ export const Config = {
 
 
 export const Config_AvatarList = [
-   "avatar-0.JPG",
-   "avatar-1.JPG",
-   "avatar-2.JPG",
-   "avatar-3.JPG",
+   "avatar-0.jpg",
+   "avatar-1.jpg",
+   "avatar-2.jpg",
+   "avatar-3.jpg",
 ]

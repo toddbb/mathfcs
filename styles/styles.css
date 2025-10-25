@@ -473,6 +473,21 @@ header h2 {
 }
 
 
+.btn.user-edit-save {   
+    padding: 8px 10px;
+    background-color: var(--accent);
+}
+
+.btn.user-edit-cancel {   
+    padding: 8px 10px;
+    background-color: var(--warning);
+}
+
+.btn.user-edit-save:hover,
+.btn.user-edit-cancel:hover {
+    filter: brightness(1.1);
+}
+
 /***************************************************************************/
 /***********       CLASSES CASCADED LAST          *************************/
 /***************************************************************************/
