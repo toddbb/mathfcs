@@ -1,7 +1,7 @@
 import { navigate } from "../services/routing.mjs";
 import * as Utils from "../utilities/utils.mjs";
 import Dom from "./dom.mjs";
-import Game from "./game.mjs";
+import Game from "./Game.mjs";
 import modalSummary from "./modalSummary.mjs";
 import modalUser from "./modalUser.mjs";
 import User from "./user.mjs";
