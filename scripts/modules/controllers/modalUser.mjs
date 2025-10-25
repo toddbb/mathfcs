@@ -55,13 +55,8 @@ const modalUser = {
          User.Storage.updateUser(false);
          const currentUser = User.state.user;
          const allUsers = User.Storage.getAllUsers();
-         // Sort users to have current user on top
-         const allUsersSorted = allUsers.sort((a, b) => {
-            if (a.name === currentUser.name) return -1;
-            if (b.name === currentUser.name) return 1;
-            return 0;
-         });
-         return allUsersSorted;
+
+         return allUsers;
       },
    },
 
@@ -87,8 +82,9 @@ const modalUser = {
 
       handleUserAddClick() {
          console.log("Add User clicked");
-         modalUser.state.newUser = User.userTemplate;
+         modalUser.state.newUser = { ...User.userTemplate }; // Create a copy to avoid reference issues
          modalUser.state.newUserId = modalUser.allUsers.length;
+         modalUser.state.currentUserId = modalUser.state.newUserId; // Set currentUserId to the new user ID
          modalUser.Ui.showEditForm(modalUser.state.newUserId, modalUser.state.newUser, modalUser.state.newUserId);
       },
 
@@ -115,20 +111,36 @@ const modalUser = {
          }
 
          if (isNewUser) {
-            console.log("Creating new user in modalUser state");
-            modalUser.state.user = modalUser.state.newUser;
-            await User.Storage.addUser(modalUser.state.user);
+            console.log("Creating new user");
+            // Create a new user object with the form data
+            const newUserData = {
+               ...modalUser.state.newUser,
+               name: newName,
+               avatarId: newAvatarId,
+            };
+
+            // Add the new user to storage
+            await User.Storage.addUser(newUserData);
+            modalUser.state.user = newUserData;
+         } else {
+            // Editing existing user - get the current user data and update it
+            modalUser.state.user = modalUser.allUsers[userId];
+            modalUser.state.user.avatarId = newAvatarId;
+            modalUser.state.user.name = newName;
          }
 
-         // update modalUser
-         modalUser.state.user.avatarId = newAvatarId;
-         modalUser.state.user.name = newName;
          modalUser.state.currentUserId = userId;
 
          console.log("Updated user data:", modalUser.state.user);
 
          // update User state & storage
          User.updateUserStateAndStorage(userId, modalUser.state.user);
+
+         // Clear new user state after successful save
+         if (isNewUser) {
+            modalUser.state.newUserId = null;
+            modalUser.state.newUser = {};
+         }
 
          // Hide the edit form
          Utils.hide(Dom.userEditContainer);
@@ -149,6 +161,9 @@ const modalUser = {
 
       handleUserEditCancel() {
          console.log("User Edit: Cancel clicked");
+         // Clear new user state if we were adding a user
+         modalUser.state.newUserId = null;
+         modalUser.state.newUser = {};
          // hide edit form
          Utils.hide(Dom.userEditContainer);
          // enable background interaction
@@ -223,7 +238,17 @@ const modalUser = {
       _buildEditForm_avatars(userId, newUser, newUserId) {
          const parent = Dom.userEditAvatarContainer;
          parent.innerHTML = ""; // clear existing avatars
-         const currentAvatarId = modalUser.allUsers[userId]?.avatarId || 0;
+
+         // Determine which avatar should be selected
+         let selectedAvatarId;
+         if (newUserId !== null && newUserId !== undefined) {
+            // For new users, use the avatar from newUser or default to 0
+            selectedAvatarId = newUser?.avatarId || 0;
+         } else {
+            // For existing users, use the stored avatar
+            selectedAvatarId = modalUser.allUsers[userId]?.avatarId || 0;
+         }
+
          const avatarList = Config_AvatarList;
 
          avatarList.forEach((avatarFileName, index) => {
@@ -237,10 +262,8 @@ const modalUser = {
                   alt: `Avatar ${avatarId}`,
                },
             };
-            if (index === currentAvatarId) {
+            if (index === selectedAvatarId) {
                avatarImgOptions.classes += " selected";
-            } else if (newUserId && index === 0) {
-               avatarImgOptions.classes += " new-user";
             }
             Utils.createElement("img", avatarImgOptions);
          });
@@ -253,13 +276,17 @@ const modalUser = {
          console.log("Populate edit form for userId:", userId);
          // add all of the optional avatars to the avatar list container
          modalUser.EditForm._buildEditForm_avatars(userId, newUser, newUserId);
-         // populate the name input
-         Dom.userEditNameInput.value = modalUser.allUsers[userId]?.name || newUser.name;
+         // populate the name input - for new users, use newUser data; for existing users, use stored data
+         if (newUserId !== null && newUserId !== undefined) {
+            Dom.userEditNameInput.value = newUser?.name || "";
+         } else {
+            Dom.userEditNameInput.value = modalUser.allUsers[userId]?.name || "";
+         }
       },
 
       getFormData() {
-         // get current user ID being edited
-         const userId = modalUser.state.currentUserId;
+         // get current user ID being edited (for new users, use newUserId)
+         const userId = modalUser.state.newUserId !== null ? modalUser.state.newUserId : modalUser.state.currentUserId;
          // get new name
          const newName = Dom.userEditNameInput.value.trim();
          // get selected avatar ID
@@ -301,6 +328,8 @@ const modalUser = {
       modalUser.allUsers = [];
       modalUser.state.currentUserId = null;
       modalUser.state.user = {};
+      modalUser.state.newUserId = null;
+      modalUser.state.newUser = {};
 
       // remove .user-select elements except for .user-select.user-add
       const userOptions = Dom.userListContainer.querySelectorAll(".user-select:not(.user-add)");
