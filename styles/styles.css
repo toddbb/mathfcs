@@ -110,31 +110,35 @@ header h2 {
 
 
 .btn-difficulty {
-   min-height: 90px;   
-   width: 130px;
-   width: clamp(130px, 35vw, 250px);
-   justify-self: center;
-   align-self: center;
-   font-size: 0.8rem;
-   border-radius: 22px;
-   cursor: pointer;
-   color: #f6f6f6;
+    min-height: 90px;
+    width: 130px;
+    width: clamp(140px, 40vw, 250px);
+    justify-self: center;
+    align-self: center;
+    font-size: 0.8rem;
+    border-radius: 12px;
+    cursor: pointer;
+    color: #f6f6f6;
 }
 
 .btn-difficulty:nth-child(1) {
    background-color: rgb(133, 133, 242);
+   justify-self: end;
 }
 
 .btn-difficulty:nth-child(2) {
    background-color: rgb(96, 96, 210);
+   justify-self: start;
 }
 
 .btn-difficulty:nth-child(3) {
    background-color: rgb(81, 81, 190);
+   justify-self: end;
 }
 
 .btn-difficulty:nth-child(4) {
    background-color: rgb(45, 45, 142);
+   justify-self: start;
 }
 
 .btn-difficulty:hover {
